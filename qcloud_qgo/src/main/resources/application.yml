@@ -1,0 +1,23 @@
+server:
+  port: 6688
+  servlet:
+      context-path: /connect
+      encoding:
+        charset: UTF-8
+        force: true
+spring:
+    application:
+        name: qcloud_qgo
+    freemarker:
+        request-context-attribute: req
+        #prefix: /templates/
+        suffix: .html
+        content-type: text/html
+        enabled: true
+        cache: false
+        charset: UTF-8
+        allow-request-override: false
+        expose-request-attributes: true
+        expose-session-attributes: true
+        expose-spring-macro-helpers: true
+        #template-loader-path: classpath:/templates/
