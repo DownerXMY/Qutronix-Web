@@ -11,6 +11,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>qutronix-common</module>
+        <module>qutronix-gateway</module>
+        <module>qutronix-feynman</module>
         <module>qutronix-console</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
