@@ -10,6 +10,8 @@ server:
     context-path: /renren-fast
 
 spring:
+  application:
+    name: renren-fast
   # 环境 dev|test|prod
   profiles:
     active: dev
@@ -23,7 +25,7 @@ spring:
       max-request-size: 100MB
       enabled: true
   redis:
-    open: false  # 是否开启redis缓存  true开启   false关闭
+    open: true  # 是否开启redis缓存  true开启   false关闭
     database: 0
     host: localhost
     port: 6379

@@ -1,7 +1,11 @@
 package com.qutronix.cloud.feynmanserver.controller;
 
 
+import com.mathworks.toolbox.javabuilder.MWException;
+import com.qutronix.cloud.feynmanserver.dto.QwsDTO;
+import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService;
+import com.qutronix.common.result.Result;
 import com.qutronix.common.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,10 +50,20 @@ public class FeynmanController {
     }
     @GetMapping(value = "/result",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public BufferedImage getImage() throws IOException {
-        return ImageIO.read(new FileInputStream(new File("F:\\qutronix\\images\\tt.png")));
+    public BufferedImage getImage(@RequestParam String fileName) throws IOException {
+        return ImageIO.read(new FileInputStream(new File("F:\\qutronix\\images\\"+fileName+".png")));
     }
 
+
+    @PostMapping (value = "/plot")
+    public Result<QwsResultDTO> plot(@RequestBody QwsDTO qwsDTO) throws IOException, MWException {
+        log.info("qwsDTO={}",qwsDTO);
+
+          String fileName = feynmanService.plot(qwsDTO);
+        QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
+                .build();
+        return Result.success(build);
+    }
 
 
 
