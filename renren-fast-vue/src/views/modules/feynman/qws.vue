@@ -7,15 +7,17 @@
       </el-header>
 
       <el-main>
-        <img :src="qwsPath" style="height: 600px;width:600px; border: 1px solid #eee">
+       <img :src="qwsPath" style="height: 600px;width:600px; border: 1px solid #eee">
       </el-main>
     </el-container>
     <el-aside width="600px" style="background-color: rgb(238, 241, 246)">
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
         label-width="220px">
-        <el-row :gutter="20">
-          <el-col :span="24" :offset="0">
-            <div style="text-align: center; font-size: 22px">A first try of the regular 2d quantum</div>
+
+        <el-row type="flex" justify="center">
+          <el-col :span="24" :offset="0" style="text-align: center;">
+            <div style="text-align: center; font-size: 22px">A first try of the
+              regular 2d quantum</div>
           </el-col>
         </el-row>
         <el-row type="flex" class="row-bg" style="margin-bottom: 10px;margin-top  : 10px;">
@@ -209,6 +211,7 @@ export default {
 .grid-content {
   border-radius: 4px;
   min-height: 36px;
+  text-align: center;
 }
 .row-bg {
   padding: 0px 0;
