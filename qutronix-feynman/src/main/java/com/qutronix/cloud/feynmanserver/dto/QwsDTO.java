@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class QwsDTO {
     private String uuid;
 
-    private BigDecimal z;
+    private Integer z;
 
     private Integer x;
     private Integer y;
@@ -21,7 +21,7 @@ public class QwsDTO {
     private Integer px;
     private Integer py;
 
-    private BigDecimal dx;
-    private BigDecimal dy;
+    private Integer dx;
+    private Integer dy;
 
 }
