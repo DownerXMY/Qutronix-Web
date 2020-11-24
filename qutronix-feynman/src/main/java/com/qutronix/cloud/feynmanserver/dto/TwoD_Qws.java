@@ -7,12 +7,13 @@ public class TwoD_Qws {
 
     private String uuid;
 
-    private Integer inputNum;
-    private float amplitude;
-    private float interval;
-    private float from;
-    private float to;
+    private String inputNum;
+    private String amplitude;
+    private String interval;
+    private String from;
+    private String to;
     private String nodeId;
-    private Integer times;
+    private String times;
+    private String colorbar;
 
 }
