@@ -11,7 +11,7 @@
 
       <el-main>
         <span class="el-dropdown-link">
-          <img src="qwsPath2" style="height:440px;width:500px;float:right;border:1px solid #eee">
+          <img :src="qwsPath2" style="height:440px;width:500px;float:right;border:1px solid #eee">
         </span>
       </el-main>
 
@@ -29,12 +29,12 @@
             <el-dropdown-item command="hot">hot</el-dropdown-item>
             <el-dropdown-item command="hot_r">hot_r</el-dropdown-item>
             <el-dropdown-item command="Parula">Parula</el-dropdown-item>
-            <el-dropdown-item command="RdYlBu">RdYlBu</el-dropdown-item>
+            <el-dropdown-item command="RdYlBu_r">RdYlBu_r</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
 
         <span class="el-dropdown-link">
-            <img :src="qwsPath3" style="height:400px;width:150px;border:1px solid #eee">
+            <img :src="qwsPath3" style="height:400px;width:80px;border:1px solid #eee">
         </span>
       </el-aside>
 
@@ -336,7 +336,7 @@ export default {
               'times': this.dataForm.times
             })
           }).then(({ data }) => {
-            if (data && data.code === 200) {
+            if (data && data.status === 200) {
               this.qwsPath2 = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.fileName)
               this.$message({
                 message: '操作成功',
