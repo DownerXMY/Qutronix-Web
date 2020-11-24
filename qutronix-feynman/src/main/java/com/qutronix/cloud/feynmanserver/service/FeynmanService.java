@@ -2,6 +2,7 @@ package com.qutronix.cloud.feynmanserver.service;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.dto.QwsDTO;
+import com.qutronix.cloud.feynmanserver.dto.QwsFileDTO;
 
 /**
  * 
@@ -15,5 +16,7 @@ public interface FeynmanService  {
    void feynmanTest() throws MWException;
 
    String plot(QwsDTO qwsDTO) throws MWException;
+
+   String plotFile(QwsFileDTO qwsFileDTO) throws MWException;
 }
 

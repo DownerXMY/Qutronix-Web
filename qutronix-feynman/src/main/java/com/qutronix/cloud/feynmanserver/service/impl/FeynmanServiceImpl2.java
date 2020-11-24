@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 
         @Override
         public String plot3(TwoD_Qws twoD_qws) throws MWException {
+            log.info("twoD_qws={}",twoD_qws);
             String filePath = "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
             JQws jQws = new JQws();
             jQws.j_qsws(twoD_qws.getFrom(),twoD_qws.getTo(),

@@ -49,7 +49,7 @@ public class FeynmanDownerTest {
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
         return ImageIO.read(
                 new FileInputStream(
-                new File("/Users/mingyuexu/Desktop/TestPics2"+fileName+".jpg")
+                new File("F:\\qutronix\\images\\"+fileName+".jpg")
                 ));
     }
 

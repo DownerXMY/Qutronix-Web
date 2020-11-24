@@ -3,6 +3,7 @@ package com.qutronix.cloud.feynmanserver.controller;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.dto.QwsDTO;
+import com.qutronix.cloud.feynmanserver.dto.QwsFileDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService;
 import com.qutronix.common.result.Result;
@@ -42,29 +43,41 @@ public class FeynmanController {
      */
     @PostMapping("/test")
     @ApiOperation(value = "测试代码")
-    public R list() throws  Exception{
+    public R list() throws Exception {
         ApplicationHome applicationHome = new ApplicationHome();
-      log.info ("applicationHome:{}",applicationHome.getDir().getAbsolutePath());
+        log.info("applicationHome:{}", applicationHome.getDir().getAbsolutePath());
         feynmanService.feynmanTest();
         return R.ok();
     }
-    @GetMapping(value = "/result",produces = MediaType.IMAGE_JPEG_VALUE)
+
+    @GetMapping(value = "/result", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
-        return ImageIO.read(new FileInputStream(new File("F:\\qutronix\\images\\"+fileName+".png")));
+        return ImageIO.read(new FileInputStream(new File("F:\\qutronix\\images\\" + fileName + ".png")));
     }
 
 
-    @PostMapping (value = "/plot")
-    public Result<QwsResultDTO> plot(@RequestBody QwsDTO qwsDTO) throws IOException, MWException {
-        log.info("qwsDTO={}",qwsDTO);
+    @PostMapping(value = "/plot")
+    public Result<QwsResultDTO> plot(@RequestBody QwsDTO qwsDTO) throws Exception {
+        log.info("qwsDTO={}", qwsDTO);
+        try {
+            String fileName = feynmanService.plot(qwsDTO);
+            QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
+                    .build();
+            return Result.success(build);
+        } catch (Exception ex) {
+            throw new Exception("Failed to plot:" + ex.getMessage());
+        }
 
-          String fileName = feynmanService.plot(qwsDTO);
+    }
+
+    @PostMapping(value = "/plotfile")
+    public Result<QwsResultDTO> plotFile(@RequestBody QwsFileDTO qwsFileDTO) throws Exception {
+        log.info("qwsFileDTO={}", qwsFileDTO);
+        String fileName = feynmanService.plotFile(qwsFileDTO);
         QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
                 .build();
         return Result.success(build);
+
     }
-
-
-
 }
