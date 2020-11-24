@@ -3,15 +3,17 @@
     <el-container style="height: 1000px; border: 1px solid #eee">
 
       <el-container>
+
         <el-header style="text-align: center; font-size: 32px">
           <span>Two Dimensional Quantum Walks</span>
         </el-header>
 
         <el-main>
           <div id="d_qws" style="width: 600px; height: 600px">
-            <img :src="qwsPath" id="qws" style="height: 600px;width:600px; border: 1px solid #eee">
+            <img :src="qwsPath" id="qws" style="height: auto; width:auto;border: 1px solid #eee">
           </div>
         </el-main>
+
       </el-container>
       <el-aside width="600px" style="background-color: rgb(238, 241, 246)">
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
@@ -208,7 +210,7 @@ export default {
     // 获取结果
     getQwsResult() {
       this.dataForm.uuid = getUUID()
-      this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=tt&uuid=${this.dataForm.uuid}`)
+      this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=test&uuid=${this.dataForm.uuid}`)
     },
     // 表单提交
     plot() {
@@ -360,7 +362,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-row {
   margin-bottom: 0px;
   &:last-child {
