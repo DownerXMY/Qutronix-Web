@@ -260,6 +260,7 @@ export default {
         'to': 5,
         'nodeId': '13,1',
         'times': 10,
+        'colorbar': 'colorbar_colorbar3',
         uuid: ''
       },
       qwsPath: '',
@@ -276,6 +277,7 @@ export default {
     handleCommand(command) {
         this.$message('Choose ColorMode "'+command+'"');
         this.qwsPath3 =window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_'+command+".png";
+        this.dataForm.colorbar = "colorbar_"+command;
     },
     // return result...
     getQwsResult() {
