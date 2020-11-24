@@ -7,11 +7,38 @@
         <span>2D Quantum Stochastic Walks</span>
       </el-header>
 
+      <el-container>
+
       <el-main>
         <span class="el-dropdown-link">
           <img src="qwsPath2" style="height:440px;width:500px;float:right;border:1px solid #eee">
         </span>
       </el-main>
+
+      <el-aside width="200px">
+        <el-dropdown @command="handleCommand">
+          <span class="el-dropdown-link">
+            Choose ColorMode<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="CMRmap">CMRmap</el-dropdown-item>
+            <el-dropdown-item command="colorbar">colorbar</el-dropdown-item>
+            <el-dropdown-item command="colorbar3">colorbar3</el-dropdown-item>
+            <el-dropdown-item command="cool_r">cool_r</el-dropdown-item>
+            <el-dropdown-item command="coolwarm">coolwarm</el-dropdown-item>
+            <el-dropdown-item command="hot">hot</el-dropdown-item>
+            <el-dropdown-item command="hot_r">hot_r</el-dropdown-item>
+            <el-dropdown-item command="Parula">Parula</el-dropdown-item>
+            <el-dropdown-item command="RdYlBu">RdYlBu</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+        <span class="el-dropdown-link">
+            <img src="qwsPath3" style="height:400px;width:150px;border:1px solid #eee">
+        </span>
+      </el-aside>
+
+      </el-container>
 
     </el-container>
     <el-aside width="20px" style="background-color: rgb(0, 0, 0)"></el-aside>
@@ -237,6 +264,7 @@ export default {
       },
       qwsPath: '',
       qwsPath2: '',
+      qwsPath3: '',
       dataRule: {}
     }
   },
@@ -244,6 +272,11 @@ export default {
     this.getQwsResult()
   },
   methods: {
+    // Colorbar Mode
+    handleCommand(command) {
+        this.$message('Choose ColorMode "'+command+'"');
+        this.qwsPath3 = "~@/assets/img/colorbar_"+command+".png";
+    },
     // return result...
     getQwsResult() {
       this.dataForm.uuid = getUUID()
@@ -376,4 +409,11 @@ export default {
     text-align: center;
   }
 }
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
 </style>
