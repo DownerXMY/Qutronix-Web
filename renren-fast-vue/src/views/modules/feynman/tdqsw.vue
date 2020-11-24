@@ -34,7 +34,7 @@
         </el-dropdown>
 
         <span class="el-dropdown-link">
-            <img src="qwsPath3" style="height:400px;width:150px;border:1px solid #eee">
+            <img :src="qwsPath3" style="height:400px;width:150px;border:1px solid #eee">
         </span>
       </el-aside>
 
@@ -275,7 +275,7 @@ export default {
     // Colorbar Mode
     handleCommand(command) {
         this.$message('Choose ColorMode "'+command+'"');
-        this.qwsPath3 = "~@/assets/img/colorbar_"+command+".png";
+        this.qwsPath3 =window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_'+command+".png";
     },
     // return result...
     getQwsResult() {
@@ -392,8 +392,8 @@ export default {
   float: right;
 }
 .row-bg {
-  padding: 10px 0;y
-  background-color: #f9fafc;
+  padding: 10px 0;
+  background-color: #f9fafc
 }
 .minitype {
   border-radius: 4px;

@@ -3,7 +3,7 @@
     <div id="app" class="joint-app joint-theme-modern">
       <div class="app-header">
         <div class="app-title">
-          <h1 align="center">架构图</h1>
+          <h1 align="center"></h1>
         </div>
         <div class="toolbar-container">
           <button id="zoom-in" style="font-size: 15px;margin-left: 10px">放大</button>
