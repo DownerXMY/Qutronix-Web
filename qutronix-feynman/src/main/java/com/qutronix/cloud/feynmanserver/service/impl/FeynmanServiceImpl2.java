@@ -1,8 +1,8 @@
 package com.qutronix.cloud.feynmanserver.service.impl;
 
 import com.mathworks.toolbox.javabuilder.MWException;
-import com.mathworks.toolbox.javabuilder.*;
 import com.qutronix.cloud.feynman.JQws;
+import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService2;
 import lombok.extern.slf4j.Slf4j;
@@ -29,18 +29,22 @@ public class FeynmanServiceImpl2 implements FeynmanService2 {
     }
 
     @Override
-    public String plot3(TwoD_Qws twoD_qws) throws MWException {
+    public QwsResultDTO plot3(TwoD_Qws twoD_qws) throws MWException {
         log.info("twoD_qws={}", twoD_qws);
         String colorbar = "colorbar_coolwarm";
         if (StringUtils.isNotEmpty(twoD_qws.getColorbar())) {
             colorbar = twoD_qws.getColorbar();
         }
         String filePath = "F:\\qutronix\\images\\" + twoD_qws.getUuid() + ".jpg";// "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
+        String figureName= twoD_qws.getUuid() + "_f1";
+        String figurePath = "F:\\qutronix\\images\\" + figureName + ".jpg";
         JQws jQws = new JQws();
         jQws.j_qsws(twoD_qws.getFrom(), twoD_qws.getTo(),
                 twoD_qws.getInterval(), twoD_qws.getAmplitude(),
                 twoD_qws.getInputNum(), twoD_qws.getNodeId(), colorbar,
-                filePath, "30", "10");
-        return twoD_qws.getUuid();
+                filePath,figurePath, "30", "10");
+        QwsResultDTO resultDTO  = QwsResultDTO.builder().fileName(twoD_qws.getUuid())
+                .figure1(figureName).build();
+        return resultDTO;
     }
 }

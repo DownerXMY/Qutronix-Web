@@ -70,9 +70,7 @@ public class FeynmanDownerTest {
             throws IOException, MWException {
         log.info("qwsDTO={}",twoD_qws);
 
-        String fileName = feynmanService.plot3(twoD_qws);
-        QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
-                .build();
+        QwsResultDTO build =  feynmanService.plot3(twoD_qws);
         return Result.success(build);
     }
 }

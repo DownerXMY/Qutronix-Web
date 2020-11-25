@@ -18,4 +18,5 @@ import java.awt.image.BufferedImage;
 @AllArgsConstructor
 public class QwsResultDTO {
     private String fileName;
+    private String figure1;
 }
