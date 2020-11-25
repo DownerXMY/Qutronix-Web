@@ -9,4 +9,6 @@ public class BS_dataForm {
 
     private Integer inputNum;
     private String iniState;
+
+    private String style;
 }
