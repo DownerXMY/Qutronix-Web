@@ -1,5 +1,6 @@
 <template>
 <el-container style="height: 660px; border: 1px solid #eee">
+
     <el-main>
     <el-container>
        <el-header style="text-align: center;height: 40px; font-size: 28px; background-color: rgb(222, 231, 208)">
@@ -19,6 +20,7 @@
     </el-container>
     </el-main>
     <el-aside width="400px" style="background-color:rgb(238, 241, 246)">
+      <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()">
         <el-row>
            <el-col :span="24">
            <div class="grid-content" style="font-size: 22px">
@@ -42,7 +44,7 @@
           </div></el-col>
           <el-col :span="10"><div class="grid-content bg-purple">
           <template>
-            <el-select v-model="value" placeholder="" @change="showStyle($event)">>
+            <el-select v-model="value" placeholder="" @change="showMessage($event)">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -148,6 +150,7 @@
            </div>
         </el-row>
 
+      </el-form>
     </el-aside>
 </el-container>
 </template>
@@ -163,29 +166,32 @@
            'iniState': '|000000000111>',
            'alpha': '',
            'varphi': '',
-           'style': 'Reck',
+           'feature': 'Reck',
            uuid: ''
         },
         bsPath: '',
         bsPath2: '',
         bsPath4: window.SITE_CONFIG.cdnUrl + '/static/img/'+'Reck_example_2.png',
         options: [{
-          value: '选项1',
+          value: 'Reck',
           label: 'Reck',
-          style: 'Reck'
+          feature: 'Reck'
         }, {
-          value: '选项2',
+          value: 'Clements',
           label: 'Clements',
-          style: 'Clements'
+          feature: 'Clements'
         }],
         value: 'Reck'
       }
     },
+    methods: {
     // Show Style
-    showStyle(e){
-        this.$message('Choose Style "'+e.style+'"');
-        this.dataForm.style = e.style
-        this.bsPath4 = window.SITE_CONFIG.cdnUrl + '/static/img/'+e.style+'_example_2.png';
+    showMessage(e) {
+        console.log(e);
+        console.log(e.feature);
+        this.$message('Choose Style "'+e+'"');
+        this.dataForm.feature = e;
+        this.bsPath4 = window.SITE_CONFIG.cdnUrl + '/static/img/'+e+'_example_2.png'
     },
     // get the picture1
           plot1() {
@@ -229,12 +235,12 @@
                         'uuid': getUUID(),
                         'inputNum': this.dataForm.inputNum,
                         'iniState': this.dataForm.iniState,
-                        'style': this.dataForm.style
+                        'feature': this.dataForm.feature
                       })
                     }).then(({ data }) => {
                       if (data && data.status === 200) {
-                        this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.waveguides)
-                        this.bsPath2 = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.distribution)
+                        this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.distribution)
+                        this.bsPath2 = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.waveguides)
                         this.$message({
                           message: 'Success',
                           type: 'success',
@@ -281,8 +287,9 @@
                     })
                   }
                 })
-              }
-  }
+              },
+    }
+ }
 </script>
 
 <style>

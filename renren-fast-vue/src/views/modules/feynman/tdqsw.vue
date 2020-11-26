@@ -193,7 +193,7 @@
 
         <el-row>
           <span class="el-dropdown-link">
-            <img src="qwsPath" style="height:190px;width:480px;float:right;border:1px solid #eee">
+            <img :src="qwsPath" style="height:190px;width:480px;float:right;border:1px solid #eee">
           </span>
         </el-row>
 
@@ -277,7 +277,7 @@ export default {
     handleCommand(command) {
         this.$message('Choose ColorMode "'+command+'"');
         this.qwsPath3 =window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_'+command+".png";
-        this.dataForm.colorbar = "colorbar_"+command;
+        this.dataForm.colorbar = 'colorbar_'+command;
     },
     // return result...
     getQwsResult() {
@@ -303,7 +303,7 @@ export default {
             })
           }).then(({ data }) => {
             if (data && data.code === 200) {
-              this.qwsPath = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.fileName)
+              this.qwsPath = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.filename)
               this.$message({
                 message: '操作成功',
                 type: 'success',
@@ -335,11 +335,13 @@ export default {
               'from': this.dataForm.from,
               'to': this.dataForm.to,
               'nodeId': this.dataForm.nodeId,
-              'times': this.dataForm.times
+              'times': this.dataForm.times,
+              'colorbar': this.dataForm.colorbar
             })
           }).then(({ data }) => {
             if (data && data.status === 200) {
               this.qwsPath2 = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.fileName)
+              this.qwsPath = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.figure1)
               this.$message({
                 message: '操作成功',
                 type: 'success',
