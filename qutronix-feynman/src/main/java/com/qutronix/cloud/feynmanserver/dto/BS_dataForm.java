@@ -7,8 +7,8 @@ public class BS_dataForm {
 
     private String uuid;
 
-    private Integer inputNum;
+    private String inputNum;
     private String iniState;
 
-    private String style;
+    private String feature;
 }

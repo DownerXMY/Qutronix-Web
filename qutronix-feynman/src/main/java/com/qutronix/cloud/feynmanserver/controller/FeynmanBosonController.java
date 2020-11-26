@@ -1,7 +1,9 @@
 package com.qutronix.cloud.feynmanserver.controller;
 
 import com.mathworks.toolbox.javabuilder.MWException;
+import com.qutronix.cloud.feynmanserver.config.FeynmanConfig;
 import com.qutronix.cloud.feynmanserver.dto.BS_dataForm;
+import com.qutronix.cloud.feynmanserver.dto.BosonResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService3;
@@ -48,7 +50,7 @@ public class FeynmanBosonController {
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
         return ImageIO.read(
                 new FileInputStream(
-                        new File("/Users/mingyuexu/Desktop/TestPics2/"+fileName+".jpg")
+                        new File(FeynmanConfig.filePath +fileName+".jpg")
                 ));
     }
 
@@ -63,15 +65,14 @@ public class FeynmanBosonController {
         return Result.success(build);
     }
 
-    @PostMapping (value = "/Boson_plot2")
-    public Result<QwsResultDTO> plot2(@RequestBody BS_dataForm bs_dataForm)
+    @PostMapping (value = "/example")
+    public Result<BosonResultDTO> plot2(@RequestBody BS_dataForm bs_dataForm)
             throws IOException, MWException {
         log.info("BS_dataForm={}",bs_dataForm);
 
-        String fileName = feynmanService.plot2(bs_dataForm);
-        QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
-                .build();
-        return Result.success(build);
+        BosonResultDTO bosonResultDTO = feynmanService.plot2(bs_dataForm);
+
+        return Result.success(bosonResultDTO);
     }
 
     @PostMapping (value = "/Boson_plot3")
