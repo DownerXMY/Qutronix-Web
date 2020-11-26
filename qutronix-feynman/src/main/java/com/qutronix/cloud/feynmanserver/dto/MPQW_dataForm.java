@@ -7,6 +7,7 @@ public class MPQW_dataForm {
 
     private String uuid;
 
+    private String stat_method;
     private Integer distance;
     private String iniState;
     private String probStates;
