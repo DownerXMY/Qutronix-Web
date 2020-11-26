@@ -329,21 +329,6 @@ export default {
         // reader.readAsBinaryString(file) // 传统input方法
       })
     },
-
-    // 选择工作表的按钮，切换对应工作表的内容
-    selectSheet(worksheet) {
-      var csv = XLSX.utils.sheet_to_csv(worksheet)
-      console.log('csv: ', csv)
-      // document.getElementById("result").innerHTML = this.csv2table(csv);
-      var txt = XLSX.utils.sheet_to_txt(worksheet)
-      console.log('txt: ', txt)
-      var html123 = XLSX.utils.sheet_to_html(worksheet)
-      console.log('html123: ', html123)
-      var json = XLSX.utils.sheet_to_json(worksheet)
-      console.log('json: ', json)
-      return json
-      // document.getElementById('result').innerHTML = html123;
-    },
     drawTablePoint() {
       this.drawTablePointVisible = true
       this.$nextTick(() => {
