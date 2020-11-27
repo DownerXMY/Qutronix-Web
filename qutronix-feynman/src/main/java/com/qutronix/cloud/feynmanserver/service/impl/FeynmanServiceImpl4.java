@@ -8,7 +8,7 @@ import com.qutronix.cloud.feynmanserver.service.FeynmanService4;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service("feynmanService3")
+@Service("feynmanService4")
 @Slf4j
 public class FeynmanServiceImpl4 implements FeynmanService4 {
     @Override
