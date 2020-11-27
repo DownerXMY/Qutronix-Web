@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <el-dialog :close-on-click-modal="false" :visible.sync="visible">
+  <el-dialog :close-on-click-modal="false" :visible.sync="visible" width="80%" fullscreen="true">
     <div id="app" class="joint-app joint-theme-modern">
       <div class="app-header">
         <div class="app-title">
@@ -39,7 +39,7 @@
               <input type="text" class="form-control" placeholder="文字颜色" v-model="shapAttrs.text.color"
                 @change="changeTextColor(shapAttrs.cell,shapAttrs.text.color)">
             </div>
-            <h2>Shap</h2>
+            <h2>Shape</h2>
             <div class="input-group mb-3 input-group-lg ">
               <div style="font-size: 15px;margin-top: 10px;margin-right: 10px">高度</div>
               <input type="text" class="form-control" placeholder="高度" v-model="shapAttrs.height"
@@ -102,7 +102,7 @@ export default {
   },
   mounted: function () {
     this.$nextTick(() => {
-      // 在此处执行你要执行的函数 
+      // 在此处执行你要执行的函数
       this.inti()
     });
     // this.shaps()
@@ -182,77 +182,131 @@ export default {
       });
 
       var r2 = new joint.shapes.fsa.State({
-        position: { x: 100, y: 10 },
+        position: { x: 10, y: 10 },
         size: { width: 10, height: 10 },
         attrs: {
           body: { stroke: 'blue', fill: '#af9bff' },
-          label: { text: '圆形', fontSize: 10 }
+          label: { text: '圆点', fontSize: 10 }
         },
-        portMarkup: [{ tagName: 'rect', selector: 'portBody' }],
       });
 
       stencilGraph.addCells(r2);
 
-      stencilPaper.on('cell:pointerdown', (cellView, e, x, y) => {
-        $('body').append('<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>');
-        var flyGraph = new joint.dia.Graph,
-          flyPaper = new joint.dia.Paper({
-            el: $('#flyPaper'),
-            width: 100,
-            height: 100,
-            model: flyGraph,
-            interactive: false
-          }),
-          flyShape = r2.clone(),
-          pos = cellView.model.position(),
-          offset = {
-            x: x - pos.x,
-            y: y - pos.y
-          };
+      stencilPaper.on('cell:pointerdown', (cellView, e, x, y)=> {
+         console.log("getCloneOnStencilPaper");
+         $('body').append('<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>');
+         var flyGraph = new joint.dia.Graph,
+             flyPaper = new joint.dia.Paper({
+                el: $('#flyPaper'),
+                width: 100,
+                height: 100,
+                model: flyGraph,
+                interactive: false
+             }),
+             flyShape = cellView.model.clone(),
+             pos = cellView.model.position(),
+             offset = {
+                x: x - pos.x,
+                y: y - pos.y
+             };
 
-        flyShape.position(0, 0);
-        flyGraph.addCell(flyShape);
-        $("#flyPaper").offset({
-          left: e.pageX - offset.x,
-          top: e.pageY - offset.y
-        });
-        $('body').on('mousemove.fly', (e) => {
-          $("#flyPaper").offset({
-            left: e.pageX - offset.x,
-            top: e.pageY - offset.y
-          });
-        });
-        $('body').on('mouseup.fly', (e) => {
-          var x = e.pageX,
-            y = e.pageY,
-            target = paper.$el.offset();
+         flyShape.position(0, 0);
+         flyGraph.addCell(flyShape);
+         $("#flyPaper").offset({
+             left: e.pageX - offset.x,
+             top: e.pageY - offset.y
+         });
+         $('body').on('mousemove.fly', (e)=>{
+             $("#flyPaper").offset({
+                 left: e.pageX - offset.x,
+                 top: e.pageY - offset.y
+             });
+         });
+         $('body').on('mouseup.fly', (e)=> {
+             var x = e.pageX,
+                 y = e.pageY,
+                 target = paper.$el.offset();
 
-          // Dropped over paper ?
-          if (x > target.left && x < target.left + paper.$el.width() && y > target.top && y < target.top + paper.$el.height()) {
-            var s = new joint.shapes.fsa.State({
-              position: { x: x, y: y },
-              size: { width: 10, height: 10 },
-              attrs: {
-                body: { stroke: 'blue', fill: '#af9bff' },
-                label: { text: '', fontSize: 10 }
-              }
-            });
-            s.position(x - target.left - offset.x, y - target.top - offset.y);
-            // s.size(10,10)
-            // console.log(this.graph)
-            this.graph.addCell(s);
-          }
-          $('body').off('mousemove.fly').off('mouseup.fly');
-          flyShape.remove();
-          $('#flyPaper').remove();
-        });
+         // Dropped over paper ?
+         if (x > target.left && x < target.left + paper.$el.width() && y > target.top && y < target.top + paper.$el.height()) {
+             var s = flyShape.clone();
+             s.position(x - target.left - offset.x, y - target.top - offset.y);
+             // s.size(10,10)
+             // console.log(this.graph)
+             this.graph.addCell(s);
+         }
+         $('body').off('mousemove.fly').off('mouseup.fly');
+         flyShape.remove();
+         $('#flyPaper').remove();
+         });
       });
+
+
+      let [_x, _y] = [0, 0];
+      paper.on('blank:pointerdown', (e, x, y)=> {
+         [_x, _y] = [e.offsetX, e.offsetY];
+         console.log("getCloneOnPaper");
+         console.log(x);
+         console.log(y);
+         $('body').append('<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>');
+         var flyGraph = new joint.dia.Graph,
+             flyPaper = new joint.dia.Paper({
+                el: $('#flyPaper'),
+                width: 100,
+                height: 100,
+                model: flyGraph,
+                interactive: false
+             }),
+             flyShape = new joint.shapes.fsa.State({
+                position: { x: _x, y: _y},
+                size: { width: 10, height: 10 },
+                attrs: {
+                   body: { stroke: 'blue', fill: '#af9bff' },
+                   label: { text: '圆点', fontSize: 10 }
+                },
+             }),
+             offset = {
+                x: x - _x,
+                y: y - _y
+             };
+
+         flyShape.position(0, 0);
+         flyGraph.addCell(flyShape);
+         $("#flyPaper").offset({
+             left: e.pageX - offset.x,
+             top: e.pageY - offset.y
+         });
+         $('body').on('mousemove.fly', (e)=>{
+             $("#flyPaper").offset({
+                 left: e.pageX - offset.x,
+                 top: e.pageY - offset.y
+             });
+         });
+         $('body').on('mouseup.fly', (e)=> {
+             var x = e.pageX,
+                 y = e.pageY,
+                 target = paper.$el.offset();
+
+         // Dropped over paper ?
+         if (x > target.left && x < target.left + paper.$el.width() && y > target.top && y < target.top + paper.$el.height()) {
+             var s = flyShape.clone();
+             s.position(x - target.left - offset.x, y - target.top - offset.y);
+             // s.size(10,10)
+             // console.log(this.graph)
+             this.graph.addCell(s);
+         }
+         $('body').off('mousemove.fly').off('mouseup.fly');
+         flyShape.remove();
+         $('#flyPaper').remove();
+         });
+      });
+
 
       // console.log(paper)
       paper.on('cell:pointerdown', (cellView, evt, x, y) => {
         // alert(JSON.stringify(window.this.shapAttrs))
         var cell = cellView.model;
-        console.log(cell)
+        console.log("pointerDown")
         if (cell.get("type").startsWith("standard")) {
           // cell.size(60,10)
           this.shapAttrs = {
@@ -267,7 +321,7 @@ export default {
             }
           }
         }
-        console.log(cell)
+        console.log("AddShapAttrs")
         if (cell.get("type") == "link") { }
       });
       // First, unembed the cell that has just been grabbed by the user.
@@ -284,6 +338,7 @@ export default {
         if (cell.get('parent')) {
           this.graph.getCell(cell.get('parent')).unembed(cell);
         }
+        console.log("111");
       });
 
 
@@ -298,7 +353,7 @@ export default {
           var labelbefore = centerbefore.toString();
           var xybefore = labelbefore.split("@")
 
-          // cell.get("position").x+width
+          // cell.get("position").x+width;
           console.log("postion x==" + cell.get("position").x + "==vue x" + this.x + "=====" + disW + "==" + (cell.get("position").x + (disW * 0.8)))
           console.log("postion y==" + cell.get("position").y + "==vue y" + this.y + "=====" + disH + "==" + (cell.get("position").y + (disH * 0.8)))
           if ((this.x >= (cell.get("position").x + (disW * 0.6))) && (this.y >= (cell.get("position").y + (disH * 0.6)))) {
@@ -323,6 +378,7 @@ export default {
       })
       paper.on('cell:pointerup', (cellView, evt, x, y) => {
 
+        console.log("pointerUp")
         var cell = cellView.model;
         var cellViewsBelow = paper.findViewsFromPoint(cell.getBBox().center());
 

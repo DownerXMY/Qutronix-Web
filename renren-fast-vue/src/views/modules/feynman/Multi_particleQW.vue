@@ -259,7 +259,7 @@
            'distance': 10,
            'iniState': '|100010001>',
            'probStates': '|000020001>;|3,1;5,1;8,1>;|1,1;8,1;9,1>',
-           'perspectives': '0000000000000000',
+           'perspectives': '000000000',
            'colorbar': 'colorbar3',
            'photon_number': 1,
            'mode': 'view all states',
@@ -363,14 +363,19 @@
                     'distance': this.dataForm.distance,
                     'iniState': this.dataForm.iniState,
                     'probStates': this.dataForm.probStates,
-                    'perspectives': this.dataForm.perspectives
+                    'perspectives': this.dataForm.perspectives,
+                    'colorbar': this.dataForm.colorbar,
+                    'photon_number': this.dataForm.photon_number,
+                    'stat_method': this.dataForm.stat_method,
+                    'mode': this.dataForm.mode
                   })
                 }).then(({ data }) => {
                   if (data && data.status === 200) {
-                    this.MPQW_Path1 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.fileName1)
-                    this.MPQW_Path2 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.fileName2)
-                    this.MPQW_Path3 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.fileName3)
-                    this.MPQW_Path4 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.fileName4)
+                    // console.log("hello")
+                    this.MPQW_Path1 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.fenumerate)
+                    this.MPQW_Path2 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.ftwoD)
+                    this.MPQW_Path3 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.foneOptic)
+                    this.MPQW_Path4 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.frhoZ)
                     this.$message({
                       message: 'Success',
                       type: 'success',
