@@ -3,6 +3,7 @@ package com.qutronix.cloud.feynmanserver.controller;
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.dto.BS_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.MPQW_dataForm;
+import com.qutronix.cloud.feynmanserver.dto.MPResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService4;
 import com.qutronix.common.result.Result;
@@ -36,30 +37,30 @@ public class FeynmanMPQWController {
 
     @PostMapping("/test")
     @ApiOperation(value = "MPQW_Test")
-    public R list() throws  Exception{
+    public R list() throws Exception {
         ApplicationHome applicationHome = new ApplicationHome();
-        log.info ("applicationHome:{}",applicationHome.getDir().getAbsolutePath());
+        log.info("applicationHome:{}", applicationHome.getDir().getAbsolutePath());
         feynmanService4.feynmanTest();
         return R.ok();
     }
 
-    @GetMapping(value = "/result",produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/result", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
+        log.info("result fileName={}", fileName);
         return ImageIO.read(
                 new FileInputStream(
-                        new File("/Users/mingyuexu/Desktop/TestPics2/"+fileName+".jpg")
+                        new File("F:\\qutronix\\images\\" + fileName + ".jpg")
                 ));
     }
 
-    @PostMapping (value = "/MPQW_plot1")
-    public Result<QwsResultDTO> plot1(@RequestBody MPQW_dataForm mpqw_dataForm)
+    @PostMapping(value = "/MPQW_plot1")
+    public Result<MPResultDTO> plot1(@RequestBody MPQW_dataForm mpqw_dataForm)
             throws IOException, MWException {
-        log.info("MPQW_dataForm={}",mpqw_dataForm);
+        log.info("mpqw_dataForm={}", mpqw_dataForm);
 
-        String fileName = feynmanService4.plot1(mpqw_dataForm);
-        QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
-                .build();
-        return Result.success(build);
+        MPResultDTO mpResultDTO = feynmanService4.plot1(mpqw_dataForm);
+
+        return Result.success(mpResultDTO);
     }
 }

@@ -8,12 +8,12 @@ public class MPQW_dataForm {
     private String uuid;
 
     private String stat_method;
-    private Integer distance;
+    private String distance;
     private String iniState;
     private String probStates;
 
     private String perspectives;
     private String colorbar;
-    private Integer photon_number;
+    private String photon_number;
     private String mode;
 }
