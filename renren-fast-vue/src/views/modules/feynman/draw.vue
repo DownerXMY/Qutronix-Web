@@ -15,6 +15,7 @@
             style="font-size: 15px;margin-left: 10px">整体上下移动</label>
           <input id="oy" type="range" value="0" min="-200" max="200" autocomplete="off" />
           <button id="clearGraph" style="font-size: 15px;margin-left: 10px">清空</button>
+          <button id="makeSure" @click="backToQws()" style="font-size: 15px;margin-left: 10px">确定</button>
         </div>
       </div>
       <div class="app-body">
@@ -76,6 +77,8 @@
 export default {
   data() {
     return {
+      tabledata: '',
+      coordinates: [],
       visible: false,
       x: 0,
       y: 0,
@@ -136,13 +139,18 @@ export default {
     changeColor(cell, color) {
       cell.attr('body/fill', color);
     },
+      backToQws () {
+         this.visible = false
+         this.$emit('refreshDrawData',this.coordinates)
+      },
+
     inti() {
       this.visible = true
       this.graph = new joint.dia.Graph
       var paper = new joint.dia.Paper({
         el: $('#paper'),
-        width: 790,
-        height: 590,
+        width: 600,
+        height: 600,
         gridSize: 10,
         drawGrid: true,
         model: this.graph,
@@ -175,8 +183,8 @@ export default {
       var stencilGraph = new joint.dia.Graph
       var stencilPaper = new joint.dia.Paper({
         el: $('#stencil'),
-        width: 790,
-        height: 590,
+        width: 600,
+        height: 600,
         model: stencilGraph,
         interactive: false
       });
@@ -241,13 +249,13 @@ export default {
          });
       });
 
-
+      // Draw on paper!!!
       let [_x, _y] = [0, 0];
       paper.on('blank:pointerdown', (e, x, y)=> {
          [_x, _y] = [e.offsetX, e.offsetY];
+         this.coordinates = this.coordinates.concat([[_x, _y]]);
+         console.log(this.coordinates);
          console.log("getCloneOnPaper");
-         console.log(x);
-         console.log(y);
          $('body').append('<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>');
          var flyGraph = new joint.dia.Graph,
              flyPaper = new joint.dia.Paper({
@@ -409,7 +417,12 @@ export default {
         paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
       });
       $('#clearGraph').on('click', () => {
-        this.graph.clear()
+        this.graph.clear(),
+        this.coordinates = []
+      });
+      $('#makeSure').on('click', () => {
+        this.coordinates = this.coordinates.map(item => ({x:item[0],y:item[1]})),
+        console.log(this.coordinates)
       });
 
       var $ox = $('#ox');

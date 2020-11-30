@@ -165,7 +165,7 @@
       </el-aside>
 
     </el-container>
-    <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint"></drawTablePoint>
+    <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></drawTablePoint>
   </div>
 </template>
 
@@ -332,9 +332,16 @@ export default {
     drawTablePoint() {
       this.drawTablePointVisible = true
       this.$nextTick(() => {
-        this.$refs.drawTablePoint.inti()
+        this.$refs.drawTablePoint.inti();
       })
     },
+      // 获取数据列表
+      getDrawData (coordinates) {
+        console.log("Finish");
+        this.dataForm.tabledata = coordinates
+        this.dataForm.tabledata = this.dataForm.tabledata.map(item => ({x:(item[0]-300)*0.5,y:(item[1]-300)*0.5}))
+        console.log(this.dataForm.tabledata)
+      },
     // 表单提交
     dataFormSubmit() {
       this.$refs['dataForm'].validate((valid) => {
