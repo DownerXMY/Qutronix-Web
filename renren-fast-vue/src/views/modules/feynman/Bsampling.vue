@@ -8,12 +8,12 @@
        </el-header>
        <el-main style="text-align: center; height: 260px; background-color: rgb(232, 241, 241)">
          <span class="el-dropdown-link">
-            <img :src="bsPath" style="height:220px;width:820px;float:right;border:1px solid #eee">
+            <img :src="bsPath" :style="selfStyle">
          </span>
        </el-main>
        <el-footer style="text-align: center; height: 320px; background-color: rgb(202, 201, 217)">
          <span class="el-dropdown-link">
-            <img :src="bsPath2" style="height:290px;width:820px;float:right;border:1px solid #eee">
+            <img :src="bsPath2" :style="selfStyle2">
          </span>
        </el-footer>
 
@@ -160,6 +160,16 @@
   export default {
     data() {
       return {
+         selfStyle: {
+           height: "220px",
+           width: "auto",
+           border: "1px solid #eee"
+        },
+         selfStyle2: {
+           height: "290px",
+           width: "auto",
+           border: "1px solid #eee"
+        },
         visible: false,
          dataForm: {
            'inputNum': 12,
@@ -169,8 +179,8 @@
            'feature': 'Reck',
            uuid: ''
         },
-        bsPath: '',
-        bsPath2: '',
+        bsPath: window.SITE_CONFIG.cdnUrl + '/static/img/'+'loading.gif',
+        bsPath2: window.SITE_CONFIG.cdnUrl + '/static/img/'+'loading1.gif',
         bsPath4: window.SITE_CONFIG.cdnUrl + '/static/img/'+'Reck_example_2.png',
         options: [{
           value: 'Reck',
@@ -239,6 +249,8 @@
                       })
                     }).then(({ data }) => {
                       if (data && data.status === 200) {
+                        this.selfStyle = {height: "220px", width: "820px", border: "1px solid #eee"}
+                        this.selfStyle2 = {height: "290px", width: "820px", border: "1px solid #eee"}
                         this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.distribution)
                         this.bsPath2 = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.waveguides)
                         this.$message({
