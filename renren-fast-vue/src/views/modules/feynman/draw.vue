@@ -14,7 +14,7 @@
           <h1 align="center"></h1>
         </div>
         <div class="toolbar-container">
-          <el-button type="info" disabled style="width: 45%">DIY QWS</el-button>
+          <el-button type="info" disabled style="width: 35%">DIY QWS</el-button>
           <button
             id="clearGraph"
             style="font-size: 20px; margin-left: 10px"
@@ -286,7 +286,7 @@ export default {
             size: { width: 10, height: 10 },
             attrs: {
               body: { stroke: "black", fill: "#f1f0f1" },
-              label: { text: "     "+this.num, fontSize: 16 },
+              label: { text: "      "+this.num, fontSize: 16 },
             },
           }),
           offset = {
@@ -504,7 +504,7 @@ body,
 }
 .app-title {
   display: inline-block;
-  width: 240px;
+  width: 0px;
   height: 30px;
   padding: 0;
   background: #e3f730;
@@ -513,7 +513,7 @@ body,
   display: inline-block;
   position: absolute;
   height: 100%;
-  left: 240px;
+  left: 0px;
   right: 0;
   box-sizing: border-box;
   /*background: red;*/
@@ -530,8 +530,8 @@ body,
   top: 0;
   /*border-right-color:red;*/
   border-style: solid;
-  border-width: 1px;
-  width: 50px;
+  border-width: 0px;
+  width: 0px;
   height: 100%;
   background-color: #4ff890;
 }
@@ -541,13 +541,13 @@ body,
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  left: 240px;
+  left: 0px;
   right: 240px;
 }
 .inspector-container {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 610px;
   bottom: 520px;
   width: 240px;
   box-sizing: border-box;
