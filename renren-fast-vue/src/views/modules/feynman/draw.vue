@@ -15,56 +15,17 @@
         </div>
         <div class="toolbar-container">
           <button
-            id="zoom-in"
-            style="font-size: 15px; margin-left: 10px"
-          >
-            放大
-          </button>
-          <button
-            id="zoom-out"
-            style="font-size: 15px; margin-left: 10px"
-          >
-            缩小
-          </button>
-          <label
-            for="ox"
-            title="Position of zero x-coordinate of the paper in pixels"
-            style="font-size: 15px; margin-left: 10px"
-          >整体左右移动</label>
-          <input
-            id="ox"
-            name="ox"
-            type="range"
-            value="0"
-            min="-200"
-            max="200"
-            autocomplete="off"
-          />
-          <label
-            for="oy"
-            title="Position of zero y-coordinate of the paper in pixels"
-            style="font-size: 15px; margin-left: 10px"
-          >整体上下移动</label>
-          <input
-            id="oy"
-            type="range"
-            value="0"
-            min="-200"
-            max="200"
-            autocomplete="off"
-          />
-          <button
             id="clearGraph"
             style="font-size: 15px; margin-left: 10px"
           >
-            清空
+            Clear All
           </button>
           <button
             id="makeSure"
             @click="backToQws()"
             style="font-size: 15px; margin-left: 10px"
           >
-            确定
+            Confirm
           </button>
         </div>
       </div>
@@ -82,7 +43,9 @@
           <el-table
             :data="tData"
             border
+            empty-text="No point yet"
             style="width: 100%"
+            max-height="500px"
           >
             <el-table-column
               prop="id"
@@ -103,78 +66,6 @@
             >
             </el-table-column>
           </el-table>
-          <div
-            class="form-horizontal"
-            style="padding: 10px"
-          >
-            <h1>编辑图形</h1>
-            <h2>Text</h2>
-            <div class="input-group mb-3 input-group-lg">
-              <div style="font-size: 15px; margin-top: 10px; margin-right: 10px">
-                文字大小
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="文字大小"
-                v-model="shapAttrs.text.fontSize"
-                @change="
-                  changeTextFontSize(shapAttrs.cell, shapAttrs.text.fontSize)
-                "
-              />
-            </div>
-            <div class="input-group mb-3 input-group-lg">
-              <div style="font-size: 15px; margin-top: 10px; margin-right: 10px">
-                文字内容
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="文字内容"
-                v-model="shapAttrs.text.content"
-                @change="
-                  changeTextContent(shapAttrs.cell, shapAttrs.text.content)
-                "
-              />
-            </div>
-            <div class="form-group input-group input-group-lg">
-              <div style="font-size: 15px; margin-top: 10px; margin-right: 10px">
-                文字颜色
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="文字颜色"
-                v-model="shapAttrs.text.color"
-                @change="changeTextColor(shapAttrs.cell, shapAttrs.text.color)"
-              />
-            </div>
-            <h2>Shape</h2>
-            <div class="input-group mb-3 input-group-lg">
-              <div style="font-size: 15px; margin-top: 10px; margin-right: 10px">
-                高度
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="高度"
-                v-model="shapAttrs.height"
-                @change="changeHeight(shapAttrs.cell, shapAttrs.height)"
-              />
-            </div>
-            <div class="form-group input-group input-group-lg">
-              <div style="font-size: 15px; margin-top: 10px; margin-right: 10px">
-                宽度
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="宽度"
-                v-model="shapAttrs.width"
-                @change="changeWidth(shapAttrs.cell, shapAttrs.width)"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -389,12 +280,12 @@ export default {
             model: flyGraph,
             interactive: false,
           }),
-          flyShape = new joint.shapes.fsa.State({
+          flyShape = new joint.shapes.standard.Circle({
             position: { x: _x, y: _y },
             size: { width: 10, height: 10 },
             attrs: {
-              body: { stroke: "blue", fill: "#af9bff" },
-              label: { text: this.num, fontSize: 10 },
+              body: { stroke: "black", fill: "#f1f0f1" },
+              label: { text: "     "+this.num, fontSize: 16 },
             },
           }),
           offset = {
