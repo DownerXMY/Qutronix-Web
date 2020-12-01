@@ -14,7 +14,7 @@
           <h1 align="center"></h1>
         </div>
         <div class="toolbar-container">
-          <el-button type="info" disabled style="width: 35%">DIY QWS</el-button>
+          <el-button type="info" disabled style="width: 45%">DIY QWS</el-button>
           <button
             id="clearGraph"
             style="font-size: 20px; margin-left: 10px"
@@ -69,6 +69,7 @@
           </el-table>
         </div>
       </div>
+      <div class="app-footer"></div>
     </div>
   </el-dialog>
 </template>
@@ -334,7 +335,6 @@ export default {
       paper.on("cell:pointerdown", (cellView, evt, x, y) => {
         // alert(JSON.stringify(window.this.shapAttrs))
         var cell = cellView.model;
-        console.log("pointerDown");
         if (cell.get("type").startsWith("standard")) {
           // cell.size(60,10)
           this.shapAttrs = {
@@ -423,8 +423,17 @@ export default {
           }
         }
       });
+
+      let [new_x, new_y] = [0, 0];
       paper.on("cell:pointerup", (cellView, evt, x, y) => {
-        console.log("pointerUp");
+        [new_x, new_y] = [evt.offsetX, evt.offsetY];
+        for(var num=0;num<this.tData.length;num++) {
+          if (this.tData[num].id == cellView.model.attributes.attrs.label.text) {
+            this.tData[num].x_coordinate = new_x;
+            this.tData[num].y_coordinate = new_y;
+            this.coordinates[num] = [new_x, new_y];
+          }
+        }
         var cell = cellView.model;
         var cellViewsBelow = paper.findViewsFromPoint(cell.getBBox().center());
 
@@ -456,6 +465,7 @@ export default {
         paper.translate(0, 0);
         paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
       });
+      // 清空确认
       $("#clearGraph").on("click", () => {
         this.graph.clear(), (this.coordinates = []), (this.tData = []), (this.num = 0);
       });
