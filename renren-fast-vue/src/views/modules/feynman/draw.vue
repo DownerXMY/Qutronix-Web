@@ -14,16 +14,17 @@
           <h1 align="center"></h1>
         </div>
         <div class="toolbar-container">
+          <el-button type="info" disabled style="width: 45%">DIY QWS</el-button>
           <button
             id="clearGraph"
-            style="font-size: 15px; margin-left: 10px"
+            style="font-size: 20px; margin-left: 10px"
           >
             Clear All
           </button>
           <button
             id="makeSure"
             @click="backToQws()"
-            style="font-size: 15px; margin-left: 10px"
+            style="font-size: 20px; margin-left: 10px"
           >
             Confirm
           </button>
@@ -45,7 +46,7 @@
             border
             empty-text="No point yet"
             style="width: 100%"
-            max-height="500px"
+            height="600px"
           >
             <el-table-column
               prop="id"
@@ -485,7 +486,7 @@ export default {
   width: 100%;
 }
 #paper {
-  background: #30d0c6;
+  background: #f1f0f1;
 }
 
 /*#stencil {
@@ -504,9 +505,9 @@ body,
 .app-title {
   display: inline-block;
   width: 240px;
-  height: 100%;
+  height: 30px;
   padding: 0;
-  background: #30d0c6;
+  background: #e3f730;
 }
 .toolbar-container {
   display: inline-block;
@@ -532,7 +533,7 @@ body,
   border-width: 1px;
   width: 50px;
   height: 100%;
-  background-color: #9093b1;
+  background-color: #4ff890;
 }
 .paper-container {
   position: absolute;
@@ -547,11 +548,10 @@ body,
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 120px;
+  bottom: 520px;
   width: 240px;
   box-sizing: border-box;
-  height: 590px;
-  background-color: #9093b1;
+  height: 600px;
 }
 
 .joint-inspector {
