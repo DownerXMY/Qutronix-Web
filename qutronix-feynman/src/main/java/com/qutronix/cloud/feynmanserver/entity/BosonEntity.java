@@ -11,7 +11,7 @@ public class BosonEntity {
 
     private String uuid;
     private String inputNum;
-    private String iniState;
+    private String iniRawState;
     private String feature;
 
 }
