@@ -93,6 +93,13 @@ public class FeynmanController {
                 .build();
         QwsFileEntity qwsFileEntity = new QwsFileEntity();
         BeanUtils.copyProperties(qwsFileDTO,qwsFileEntity);
+        String points = "";
+        for (TableDataDTO tableDataDTO : qwsFileDTO.getTabledata()) {
+            String pointCoordinate = "("+tableDataDTO.getX()+","+tableDataDTO.getY()+")";
+            points = points + pointCoordinate + ", ";
+        }
+        points = points.substring(0,points.length()-2);
+        qwsFileEntity.setPoints(points);
         qwsFileService.save(qwsFileEntity);
         return Result.success(build);
     }
@@ -131,13 +138,7 @@ public class FeynmanController {
             qwsFileDtoRebuild.setUuid(qwsFileEntity.getUuid());
             qwsFileDtoRebuild.setFz(qwsFileEntity.getFz());
             qwsFileDtoRebuild.setInn(qwsFileEntity.getInn());
-            String points = "";
-            for (TableDataDTO tableDataDTO : qwsFileEntity.getTabledata()) {
-                String pointCoordinate = "("+tableDataDTO.getX()+","+tableDataDTO.getY()+")";
-                points = points + pointCoordinate + ", ";
-            }
-            points = points.substring(0,points.length()-2);
-            qwsFileDtoRebuild.setPoints(points);
+            qwsFileDtoRebuild.setPoints(qwsFileEntity.getPoints());
         }
         return Result.success(list);
     }
