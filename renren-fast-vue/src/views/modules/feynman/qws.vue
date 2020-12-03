@@ -154,12 +154,148 @@
             </el-col>
           </el-row>
           <el-row type="flex" class="row-bg" style="margin-bottom: 10px;margin-top:10px;" justify="center">
-            <el-col :span="7" justify="center">
+            <el-col :span="8">
               <el-button type="success" round>Plot your file</el-button>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="11">
               <el-button type="success" round @click="plotFile()">Plot your file Quickly</el-button>
             </el-col>
+            <el-col :span="8">
+              <el-button type="success" round @click="loadtasks()">Load Tasks</el-button>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="success" round @click="cleartasks()">Clear All</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+          <el-table
+            :data="tData"
+            height="340"
+            border
+            empty-text="No record yet"
+            style="width: 100%">
+            <el-table-column
+              prop="Id"
+              label="Id"
+              width="40">
+            </el-table-column>
+            <el-table-column
+              prop="z"
+              label="z"
+              width="40">
+            </el-table-column>
+            <el-table-column
+              prop="x"
+              label="x"
+              width="40">
+            </el-table-column>
+            <el-table-column
+              prop="y"
+              label="y"
+              width="40">
+            </el-table-column>
+            <el-table-column
+              prop="dx"
+              label="dx"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="dy"
+              label="dy"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="px"
+              label="px"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="py"
+              label="py"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="Fz"
+              label="Fz"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="Inn"
+              label="Inn"
+              width="60">
+            </el-table-column>
+            <el-table-column
+              prop="imgUrl"
+              label="imgUrl"
+              width="80">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="takeDraw(scope.row)">plot</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="Uuid"
+              label="Uuid"
+              width="60"
+              v-if="show">
+            </el-table-column>
+          </el-table>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-button type="success" round @click="loadHistories()">Load Histories</el-button>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="success" round @click="clearHisroties()">Clear Histories</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-table
+              :data="tData2"
+              height="240"
+              border
+              empty-text="No record yet"
+              style="width: 100%">
+              <el-table-column
+                prop="Id"
+                label="Id"
+                width="40">
+              </el-table-column>
+              <el-table-column
+                prop="fz"
+                label="fz"
+                width="40">
+              </el-table-column>
+              <el-table-column
+                prop="inn"
+                label="inn"
+                width="60">
+              </el-table-column>
+              <el-table-column
+                prop="points"
+                label="points"
+                width="380">
+              </el-table-column>
+            <el-table-column
+              prop="imgUrl"
+              label="imgUrl"
+              width="80">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="takeManDraw(scope.row)">plot</el-button>
+              </template>
+            </el-table-column>
+              <el-table-column
+                prop="uuid"
+                label="uuid"
+                width="40"
+                v-if="show">
+              </el-table-column>
+            </el-table>
           </el-row>
         </el-form>
       </el-aside>
@@ -176,6 +312,11 @@ import DrawTablePoint from './draw'
 export default {
   data() {
     return {
+      show: false,
+      num: 0,
+      num2: 0,
+      tData: [],
+      tData2: [],
       visible: false,
       dataForm: {
         z: 5,
@@ -189,7 +330,6 @@ export default {
         'inn': '2',
         uuid: '',
         tabledata: ''
-
       },
       drawTablePointVisible: false,
       qwsPath: '',
@@ -207,10 +347,65 @@ export default {
     DrawTablePoint
   },
   methods: {
+    takeDraw(row) {
+        console.log(row.Uuid);
+        this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.Uuid);
+    },
+    takeManDraw(row) {
+      console.log(row.uuid);
+      this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.uuid)
+    },
     // 获取结果
     getQwsResult() {
       this.dataForm.uuid = getUUID()
       this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=test&uuid=${this.dataForm.uuid}`)
+    },
+    // Load Tasks
+    loadtasks() {
+      console.log("loading data from qws...");
+      this.$http({
+        url: this.$http.adornUrl('/feynman/server/qws/result'),
+        method: "post"
+        }).then(({data}) => {
+          for (var amount=0;amount<data.data.length;amount++) {
+            if (data.data[amount].z != null) {
+              this.num = this.num + 1;
+              var default_Fz = data.data[amount].Fz;
+              var default_Inn = data.data[amount].Inn;
+              if (data.data[amount].Fz == null) {
+                this.defalut_Fz = '0';
+              }
+              if (data.data[amount].Inn == null) {
+                this.default_Inn = '0';
+              }
+              this.tData.push({Id:this.num,z:data.data[amount].z,x:data.data[amount].x,y:data.data[amount].y,dx:data.data[amount].dx,dy:data.data[amount].dy,px:data.data[amount].px,py:data.data[amount].py,Fz:this.defalut_Fz,Inn:this.default_Inn,Uuid:data.data[amount].uuid});
+            }
+          }
+        });
+    },
+    // Load Histories
+    loadHistories() {
+      console.log("loading data from qwsFile...");
+      this.$http({
+        url: this.$http.adornUrl('/feynman/server/qwsFile/result'),
+        method: "post"
+        }).then(({data}) => {
+          console.log(data);
+          for (var amount=0;amount<data.data.length;amount++) {
+            this.num2 = this.num2 + 1;
+              this.tData2.push({Id:this.num2,fz:data.data[amount].fz,inn:data.data[amount].inn,uuid:data.data[amount].uuid,points:data.data[amount].points});
+            }
+        });  
+    },
+    // Clear Tasks
+    cleartasks() {
+      this.tData = [];
+      this.num = 0;
+    },
+    // Clear Histories
+    clearHistories() {
+      this.tData2 = [];
+      this.num2 = 0;
     },
     // 表单提交
     plot() {
@@ -233,7 +428,9 @@ export default {
           }).then(({ data }) => {
             console.log('data=' + data + 'data.status=' + data.status)
             if (data && data.status === 200) {
-              this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName)
+              this.num = this.num + 1;
+              this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName);
+              this.tData.push({Id:this.num,z:this.dataForm.z,x:this.dataForm.x,y:this.dataForm.y,dx:this.dataForm.dx,dy:this.dataForm.dy,px:this.dataForm.px,py:this.dataForm.py,Fz:this.dataForm.fz,Inn:this.dataForm.inn,Uuid:this.dataForm.uuid});
               this.$message({
                 message: '操作成功',
                 type: 'success',
@@ -267,6 +464,14 @@ export default {
             console.log('data=' + data + 'data.status=' + data.status)
             if (data && data.status === 200) {
               this.qwsPath = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName)
+              this.num2 = this.num2 + 1;
+              var tableFileData = "";
+              for (var index=0;index<this.dataForm.tabledata.length;index++) {
+                this.tableFileData = this.tableFileData + "("+this.dataForm.tabledata[index].x+","+this.dataForm.tabledata[index].y+"), ";
+              }
+              this.tableFileData = this.tableFileData.substring(9,this.tableFileData.length-2);
+              console.log(this.tableFileData);
+              this.tData2.push({Id:this.num2,fz:this.dataForm.fz,inn:this.dataForm.inn,uuid:this.dataForm.uuid,points:this.tableFileData})
               //  this.qws.width = Math.ceil(this.qws.height / this.qws.width * 600) + 'px'
               this.$message({
                 message: '操作成功',
@@ -340,7 +545,7 @@ export default {
         console.log("Finish");
         this.dataForm.tabledata = coordinates
         this.dataForm.tabledata = this.dataForm.tabledata.map(item => ({x:(item[0]-300)*0.5,y:(item[1]-300)*0.5}))
-        console.log(this.dataForm.tabledata)
+        console.log(this.dataForm.tabledata);
       },
     // 表单提交
     dataFormSubmit() {
