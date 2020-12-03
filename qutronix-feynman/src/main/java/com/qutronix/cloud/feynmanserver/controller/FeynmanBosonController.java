@@ -2,26 +2,32 @@ package com.qutronix.cloud.feynmanserver.controller;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.config.FeynmanConfig;
+import com.qutronix.cloud.feynmanserver.dao.BosonDao;
 import com.qutronix.cloud.feynmanserver.dto.BS_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.BosonResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
+import com.qutronix.cloud.feynmanserver.entity.BosonEntity;
+import com.qutronix.cloud.feynmanserver.service.BosonService;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService3;
 import com.qutronix.common.result.Result;
 import com.qutronix.common.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("feynman/server3")
@@ -31,6 +37,9 @@ public class FeynmanBosonController {
 
     @Autowired
     FeynmanService3 feynmanService;
+
+    @Autowired
+    BosonService bosonService;
 
     /**
      * Demo Code For Boson Sampling...
@@ -71,6 +80,9 @@ public class FeynmanBosonController {
         log.info("BS_dataForm={}",bs_dataForm);
 
         BosonResultDTO bosonResultDTO = feynmanService.plot2(bs_dataForm);
+        BosonEntity bosonEntity = new BosonEntity();
+        BeanUtils.copyProperties(bosonEntity,bs_dataForm);
+        bosonService.save(bosonEntity);
 
         return Result.success(bosonResultDTO);
     }
@@ -84,5 +96,12 @@ public class FeynmanBosonController {
         QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
                 .build();
         return Result.success(build);
+    }
+
+    @PostMapping(value = "/Boson/result")
+    @ResponseBody
+    public Result<List<BosonEntity>> returnAll() throws Exception {
+        List<BosonEntity> result = bosonService.returnAll();
+        return Result.success(result);
     }
 }
