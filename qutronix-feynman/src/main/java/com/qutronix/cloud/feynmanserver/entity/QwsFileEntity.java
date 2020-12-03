@@ -16,5 +16,5 @@ public class QwsFileEntity {
 
     private String fz;
     private String inn;
-    private TableDataDTO[] tabledata;
+    private String points;
 }
