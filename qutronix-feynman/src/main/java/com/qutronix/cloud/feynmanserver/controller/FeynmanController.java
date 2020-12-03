@@ -70,8 +70,8 @@ public class FeynmanController {
     public Result<QwsResultDTO> plot(@RequestBody QwsDTO qwsDTO) throws Exception {
         log.info("qwsDTO={}", qwsDTO);
         try {
-//            String fileName = feynmanService.plot(qwsDTO);
-            QwsResultDTO build = QwsResultDTO.builder().fileName(qwsDTO.getUuid())
+           String fileName = feynmanService.plot(qwsDTO);
+            QwsResultDTO build = QwsResultDTO.builder().fileName(fileName )
                     .build();
             QwsEntity qwsEntity = new QwsEntity();
             BeanUtils.copyProperties(qwsDTO,qwsEntity);
