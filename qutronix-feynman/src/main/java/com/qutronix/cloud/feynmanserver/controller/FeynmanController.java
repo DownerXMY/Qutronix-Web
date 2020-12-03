@@ -139,6 +139,7 @@ public class FeynmanController {
             qwsFileDtoRebuild.setFz(qwsFileEntity.getFz());
             qwsFileDtoRebuild.setInn(qwsFileEntity.getInn());
             qwsFileDtoRebuild.setPoints(qwsFileEntity.getPoints());
+            list.add(qwsFileDtoRebuild);
         }
         return Result.success(list);
     }
