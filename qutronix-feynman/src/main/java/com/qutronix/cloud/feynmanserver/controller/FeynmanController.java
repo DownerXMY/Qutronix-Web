@@ -2,12 +2,11 @@ package com.qutronix.cloud.feynmanserver.controller;
 
 
 import com.mathworks.toolbox.javabuilder.MWException;
-import com.qutronix.cloud.feynmanserver.dto.Demo;
-import com.qutronix.cloud.feynmanserver.dto.QwsDTO;
-import com.qutronix.cloud.feynmanserver.dto.QwsFileDTO;
-import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
+import com.qutronix.cloud.feynmanserver.dto.*;
 import com.qutronix.cloud.feynmanserver.entity.QwsEntity;
+import com.qutronix.cloud.feynmanserver.entity.QwsFileEntity;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService;
+import com.qutronix.cloud.feynmanserver.service.QwsFileService;
 import com.qutronix.cloud.feynmanserver.service.QwsService;
 import com.qutronix.common.result.Result;
 import com.qutronix.common.utils.R;
@@ -47,6 +46,9 @@ public class FeynmanController {
     @Autowired
     QwsService qwsService;
 
+    @Autowired
+    QwsFileService qwsFileService;
+
     /**
      * 测试代码
      */
@@ -70,8 +72,8 @@ public class FeynmanController {
     public Result<QwsResultDTO> plot(@RequestBody QwsDTO qwsDTO) throws Exception {
         log.info("qwsDTO={}", qwsDTO);
         try {
-//            String fileName = feynmanService.plot(qwsDTO);
-            QwsResultDTO build = QwsResultDTO.builder().fileName(qwsDTO.getUuid())
+        String fileName = feynmanService.plot(qwsDTO);
+            QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
                     .build();
             QwsEntity qwsEntity = new QwsEntity();
             BeanUtils.copyProperties(qwsDTO,qwsEntity);
@@ -89,8 +91,10 @@ public class FeynmanController {
         String fileName = feynmanService.plotFile(qwsFileDTO);
         QwsResultDTO build = QwsResultDTO.builder().fileName(fileName)
                 .build();
+        QwsFileEntity qwsFileEntity = new QwsFileEntity();
+        BeanUtils.copyProperties(qwsFileDTO,qwsFileEntity);
+        qwsFileService.save(qwsFileEntity);
         return Result.success(build);
-
     }
 
     @PostMapping(value = "/qws/result")
@@ -112,6 +116,28 @@ public class FeynmanController {
             demo.setInn(qwsEntity.getInn());
             demo.setUuid(qwsEntity.getUuid());
             list.add(demo);
+        }
+        return Result.success(list);
+    }
+
+    @PostMapping(value = "/qwsFile/result")
+    @ResponseBody
+    public Result<List<QwsFileDtoRebuild>> getPoints() throws Exception {
+        List<QwsFileEntity> result = qwsFileService.getPoints();
+        List<QwsFileDtoRebuild> list = new ArrayList<>();
+        for (QwsFileEntity qwsFileEntity : result) {
+            QwsFileDtoRebuild qwsFileDtoRebuild = new QwsFileDtoRebuild();
+            qwsFileDtoRebuild.setId(qwsFileEntity.getId());
+            qwsFileDtoRebuild.setUuid(qwsFileEntity.getUuid());
+            qwsFileDtoRebuild.setFz(qwsFileEntity.getFz());
+            qwsFileDtoRebuild.setInn(qwsFileEntity.getInn());
+            String points = "";
+            for (TableDataDTO tableDataDTO : qwsFileEntity.getTabledata()) {
+                String pointCoordinate = "("+tableDataDTO.getX()+","+tableDataDTO.getY()+")";
+                points = points + pointCoordinate + ", ";
+            }
+            points = points.substring(0,points.length()-2);
+            qwsFileDtoRebuild.setPoints(points);
         }
         return Result.success(list);
     }
