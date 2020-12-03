@@ -1,6 +1,7 @@
 package com.qutronix.cloud.feynmanserver.dto;
 
 import lombok.Data;
+import org.springframework.boot.actuate.integration.IntegrationGraphEndpoint;
 
 import java.math.BigDecimal;
 
@@ -13,15 +14,15 @@ import java.math.BigDecimal;
 public class QwsDTO {
     private String uuid;
 
-    private Integer z;
+    private String z;
 
-    private Integer x;
-    private Integer y;
+    private String x;
+    private String y;
 
-    private Integer px;
-    private Integer py;
+    private String px;
+    private String py;
 
-    private Integer dx;
-    private Integer dy;
+    private String dx;
+    private String dy;
 
 }
