@@ -150,6 +150,62 @@
            </div>
         </el-row>
 
+        <el-row>
+            <el-col :span="10">
+              <el-button type="success" round @click="loadRecords()">Load Records</el-button>
+            </el-col>
+            <el-col :span="10">
+              <el-button type="success" round @click="clearRecords()">Clear Records</el-button>
+            </el-col>
+        </el-row>
+
+        <el-row>
+        <el-table
+          :data="bosonData"
+          height="240"
+          border
+          empty-text="No record yet"
+          style="width: 100%">
+          <el-table-column
+            prop="Id"
+            label="Id"
+            width="40">
+          </el-table-column>
+          <el-table-column
+            prop="inputNum"
+            label="inputNum"
+            width="100">
+          </el-table-column>
+          <el-table-column
+            prop="iniState"
+            label="iniState"
+            width="80">
+          </el-table-column>
+          <el-table-column
+            prop="feature"
+            label="feature"
+            width="80">
+          </el-table-column>
+          <el-table-column
+            prop="imgUrl"
+            label="imgUrl"
+            width="100">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="getDraw(scope.row)">plot</el-button>
+              </template>
+          </el-table-column>
+          <el-table-column
+            prop="uuid"
+            label="uuid"
+            width="40"
+            v-if="show">
+          </el-table-column>
+        </el-table>
+        </el-row>
+
       </el-form>
     </el-aside>
 </el-container>
@@ -160,6 +216,9 @@
   export default {
     data() {
       return {
+        show: false,
+        bosonData: [],
+        index: 0,
          selfStyle: {
            height: "220px",
            width: "auto",
@@ -195,6 +254,30 @@
       }
     },
     methods: {
+    // get drawing
+    getDraw(row) {
+      console.log(row.uuid);
+      this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + row.uuid + "_distribution");
+      this.bsPath2 = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.uuid + "_waveguides");
+    },
+    // load records
+    loadRecords() {
+      console.log("loading data from boson...");
+      this.$http({
+        url: this.$http.adornUrl('/feynman/server3/Boson/result'),
+        method: "post"
+        }).then(({data}) => {
+          for (var amount=0;amount<data.data.length;amount++) {
+            this.index = this.index + 1;
+            this.bosonData.push({Id:this.index,inputNum:data.data[amount].inputNum,iniState:data.data[amount].iniState,feature:data.data[amount].feature,uuid:data.data[amount].uuid});
+          }
+        });
+    },
+    // clear records
+    clearRecords() {
+      this.bosonData = [];
+      this.index = 0;
+    },
     // Show Style
     showMessage(e) {
         console.log(e);
@@ -253,6 +336,8 @@
                         this.selfStyle2 = {height: "290px", width: "820px", border: "1px solid #eee"}
                         this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.distribution)
                         this.bsPath2 = this.$http.adornUrl(`/feynman/server3/result?fileName=` + data.data.waveguides)
+                        this.index = this.index + 1;
+                        this.bosonData.push({Id:this.index,inputNum:this.dataForm.inputNum,iniState:this.dataForm.iniState,feature:this.dataForm.feature,uuid:this.dataForm.uuid})
                         this.$message({
                           message: 'Success',
                           type: 'success',
