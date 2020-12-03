@@ -82,6 +82,9 @@ public class FeynmanBosonController {
         BosonResultDTO bosonResultDTO = feynmanService.plot2(bs_dataForm);
         BosonEntity bosonEntity = new BosonEntity();
         BeanUtils.copyProperties(bosonEntity,bs_dataForm);
+        String refinedState = bs_dataForm.getIniState();
+        refinedState = refinedState.substring(1,refinedState.length()-2);
+        bosonEntity.setIniRawState(refinedState);
         bosonService.save(bosonEntity);
 
         return Result.success(bosonResultDTO);
