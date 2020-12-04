@@ -30,7 +30,7 @@ public class FeynmanServiceImpl4 implements FeynmanService4 {
 
         JQws jQws = new JQws();
         jQws.j_mp(mpdataForm.getDistance(), mpdataForm.getIniState(), mpdataForm.getProbStates()
-                , mpdataForm.getStat_method(), mpdataForm.getPerspectives(), mpdataForm.getPhoton_number(),
+                , mpdataForm.getStatMethod(), mpdataForm.getPerspectives(), mpdataForm.getPhotonNumber(),
                 "colorbar_"+mpdataForm.getColorbar(), fEnumerateFile, fTwoDFile, fOneOpticFile, fRhoZFile);
 
         MPResultDTO build = MPResultDTO.builder().fEnumerate(fEnumerate)

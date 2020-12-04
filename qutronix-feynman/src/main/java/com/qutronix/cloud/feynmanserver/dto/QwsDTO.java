@@ -25,4 +25,6 @@ public class QwsDTO {
     private String dx;
     private String dy;
 
+    private String colorbar;
+
 }
