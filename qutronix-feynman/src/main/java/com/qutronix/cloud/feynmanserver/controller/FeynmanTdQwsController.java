@@ -4,15 +4,20 @@ import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.dto.QwsDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
+import com.qutronix.cloud.feynmanserver.entity.MPQwsEntity;
+import com.qutronix.cloud.feynmanserver.entity.TdQwsEntity;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService2;
+import com.qutronix.cloud.feynmanserver.service.TdQwsService;
 import com.qutronix.common.result.Result;
 import com.qutronix.common.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.system.ApplicationHome;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +26,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("feynman/server2")
 @Api(tags = "思量云FeynmanServer2")
 @Slf4j
-public class FeynmanDownerTest {
+public class FeynmanTdQwsController {
 
     @Autowired
     FeynmanService2 feynmanService;
+
+    @Autowired
+    TdQwsService tdQwsService;
 
     /**
      * Demo Code For 2D Quantum Stochastic Walks...
@@ -71,6 +80,16 @@ public class FeynmanDownerTest {
         log.info("qwsDTO={}",twoD_qws);
 
         QwsResultDTO build =  feynmanService.plot3(twoD_qws);
+        TdQwsEntity tdQwsEntity = new TdQwsEntity();
+        BeanUtils.copyProperties(twoD_qws,tdQwsEntity);
+        tdQwsService.save(tdQwsEntity);
         return Result.success(build);
+    }
+
+    @PostMapping(value = "/TdQws/result")
+    @ResponseBody
+    public Result<List<TdQwsEntity>> returnAll() throws Exception {
+        List<TdQwsEntity> list = tdQwsService.returnAll();
+        return Result.success(list);
     }
 }
