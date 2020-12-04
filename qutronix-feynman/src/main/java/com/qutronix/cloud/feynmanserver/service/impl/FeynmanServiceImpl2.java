@@ -39,8 +39,8 @@ public class FeynmanServiceImpl2 implements FeynmanService2 {
         String figureName= twoD_qws.getUuid() + "_f1";
         String figurePath = "F:\\qutronix\\images\\" + figureName + ".jpg";
         JQws jQws = new JQws();
-        jQws.j_qsws(twoD_qws.getFrom(), twoD_qws.getTo(),
-                twoD_qws.getInterval(), twoD_qws.getAmplitude(),
+        jQws.j_qsws(twoD_qws.getFData(), twoD_qws.getTData(),
+                twoD_qws.getGap(), twoD_qws.getAmplitude(),
                 twoD_qws.getInputNum(), twoD_qws.getNodeId(), colorbar,
                 filePath,figurePath, "30", "10");
         QwsResultDTO resultDTO  = QwsResultDTO.builder().fileName(twoD_qws.getUuid())
