@@ -248,7 +248,7 @@
               <el-button type="success" round @click="loadHistories()">Load Histories</el-button>
             </el-col>
             <el-col :span="6">
-              <el-button type="success" round @click="clearHisroties()">Clear Histories</el-button>
+              <el-button type="success" round @click="clearHistories()">Clear Histories</el-button>
             </el-col>
           </el-row>
           <el-row>
