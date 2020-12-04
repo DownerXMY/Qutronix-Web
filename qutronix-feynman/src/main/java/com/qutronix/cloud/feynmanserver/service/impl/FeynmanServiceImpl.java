@@ -34,7 +34,7 @@ public class FeynmanServiceImpl implements FeynmanService {
         String file = "F:\\qutronix\\images\\" + qwsDTO.getUuid() + ".png";
         JQws jQws = new JQws();
         jQws.j_qws(qwsDTO.getZ().toString(), qwsDTO.getX().toString(), qwsDTO.getY().toString(),
-                qwsDTO.getPx().toString(), qwsDTO.getPy().toString(), qwsDTO.getDx().toString(), qwsDTO.getDy().toString(), "colorbar_coolwarm", file, "30", "10");
+                qwsDTO.getPx().toString(), qwsDTO.getPy().toString(), qwsDTO.getDx().toString(), qwsDTO.getDy().toString(), "colorbar_"+qwsDTO.getColorbar(), file, "30", "10");
         return qwsDTO.getUuid();
     }
 

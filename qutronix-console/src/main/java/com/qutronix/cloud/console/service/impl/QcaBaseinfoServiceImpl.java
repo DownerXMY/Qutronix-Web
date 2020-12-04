@@ -18,6 +18,9 @@ public class QcaBaseinfoServiceImpl extends ServiceImpl<QcaBaseinfoDao, QcaBasei
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+      QueryWrapper<QcaBaseinfoEntity> queryWrapper=  new QueryWrapper<QcaBaseinfoEntity>();
+      //like %key%
+        queryWrapper.like("name","张三");
         IPage<QcaBaseinfoEntity> page = this.page(
                 new Query<QcaBaseinfoEntity>().getPage(params),
                 new QueryWrapper<QcaBaseinfoEntity>()
