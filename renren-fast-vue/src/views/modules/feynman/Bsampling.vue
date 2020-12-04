@@ -184,12 +184,12 @@
           <el-table-column
             prop="feature"
             label="feature"
-            width="80">
+            width="90">
           </el-table-column>
           <el-table-column
             prop="imgUrl"
             label="imgUrl"
-            width="100">
+            width="90">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
@@ -258,7 +258,7 @@
     getDraw(row) {
       console.log(row.uuid);
       this.bsPath = this.$http.adornUrl(`/feynman/server3/result?fileName=` + row.uuid + "_distribution");
-      this.bsPath2 = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.uuid + "_waveguides");
+      this.bsPath2 = this.$http.adornUrl(`/feynman/server3/result?fileName=` + row.uuid + "_waveguides");
     },
     // load records
     loadRecords() {
@@ -267,9 +267,10 @@
         url: this.$http.adornUrl('/feynman/server3/Boson/result'),
         method: "post"
         }).then(({data}) => {
+          console.log(data);
           for (var amount=0;amount<data.data.length;amount++) {
             this.index = this.index + 1;
-            this.bosonData.push({Id:this.index,inputNum:data.data[amount].inputNum,iniState:data.data[amount].iniState,feature:data.data[amount].feature,uuid:data.data[amount].uuid});
+            this.bosonData.push({Id:this.index,inputNum:data.data[amount].inputNum,iniState:data.data[amount].iniRawState,feature:data.data[amount].feature,uuid:data.data[amount].uuid});
           }
         });
     },

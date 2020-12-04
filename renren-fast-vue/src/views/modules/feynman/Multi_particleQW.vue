@@ -92,6 +92,87 @@
      </el-aside>
 
      </el-container>
+     <el-footer style="text-align: center; height: 290px; font-size: 28px; background-color:rgb(222, 231, 208)">
+    <template>
+  <el-table
+    :data="MPQwsData"
+    height="250"
+    border
+    empty-text="No record yet"
+    style="width: 100%">
+    <el-table-column
+      prop="Id"
+      label="Id"
+      width="40">
+    </el-table-column>
+    <el-table-column
+      prop="stat_method"
+      label="stat_method"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="iniState"
+      label="iniState"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="distance"
+      label="distance"
+      width="100">
+    </el-table-column>
+    <el-table-column
+      prop="probState"
+      label="probState"
+      width="200">
+    </el-table-column>
+    <el-table-column
+      prop="perspectives"
+      label="perspectives"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="colorbar"
+      label="colorbar"
+      width="100">
+    </el-table-column>
+    <el-table-column
+      prop="photon_number"
+      label="photon_number"
+      width="80">
+    </el-table-column>
+    <el-table-column
+      prop="mode"
+      label="mode"
+      width="70">
+    </el-table-column>
+    <el-table-column
+      prop="uuid"
+      label="uuid"
+      width="100"
+      v-if="show">
+    </el-table-column>
+    <el-table-column
+      prop="imgUrl"
+      label="imgUrl"
+      width="80">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          type="success"
+          @click="getDraw(scope.row)">plot</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+          <el-row>
+            <el-col :span="12">
+              <el-button type="success" round @click="loadRecords()">Load Records</el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="success" round @click="clearRecords()">Clear Records</el-button>
+            </el-col>
+          </el-row>
+    </template>
+     </el-footer>
    </el-container>
   </el-main>
 
@@ -251,9 +332,14 @@
 
 <script>
   import { getUUID } from '@/utils'
+import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
   export default {
     data() {
       return {
+        show: false,
+        probUpdateStates: "",
+        index: 0,
+        MPQwsData: [],
         visible: false,
          dataForm: {
            'distance': 10,
@@ -330,6 +416,44 @@
       }
     },
     methods: {
+    // get Drawing
+    getDraw(row) {
+      this.MPQW_Path1 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + row.uuid+"_fenumerate");
+      this.MPQW_Path2 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + row.uuid+"_ftwoD");
+      this.MPQW_Path3 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + row.uuid+"_foneOptic");
+      this.MPQW_Path4 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + row.uuid+"_frhoZ");
+    },
+    // Load Records
+    loadRecords() {
+      console.log("loading data from mpqws...");
+      this.$http({
+        url: this.$http.adornUrl('/feynman/server4/MPQws/result'),
+        method: "post"
+        }).then(({data}) => {
+          for (var amount=0;amount<data.data.length;amount++) {
+            console.log(data.data[amount]);
+            this.index = this.index + 1;
+            this.probUpdateStates = data.data[amount].probRawStates.replace("]",">");
+            this.MPQwsData.push({
+              Id:this.index,
+              stat_method:data.data[amount].statMethod,
+              iniState:data.data[amount].iniRawState,
+              probState:this.probUpdateStates,
+              perspectives:data.data[amount].perspectives,
+              distance:data.data[amount].distance,
+              colorbar:data.data[amount].colorbar,
+              mode:data.data[amount].mode,
+              photon_number:data.data[amount].photonNumber,       
+              uuid:data.data[amount].uuid
+            });
+          }
+        });
+    },
+    // Clear Records
+    clearRecords() {
+      this.index = 0;
+      this.MPQwsData = [];
+    },
     // Statistical Methods
     showMessage(e1) {
         this.$message('Choose Statistical Method "'+e1+'"');
@@ -376,6 +500,19 @@
                     this.MPQW_Path2 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.ftwoD)
                     this.MPQW_Path3 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.foneOptic)
                     this.MPQW_Path4 = this.$http.adornUrl(`/feynman/server4/result?fileName=` + data.data.frhoZ)
+                    this.index = this.index + 1;
+                    this.MPQwsData.push({
+                      Id:this.index,
+                      stat_method:this.dataForm.stat_method,
+                      iniState:this.dataForm.iniState,
+                      probState:this.dataForm.probStates,
+                      perspectives:this.dataForm.perspectives,
+                      distance:this.dataForm.distance,
+                      colorbar:this.dataForm.colorbar,
+                      mode:this.dataForm.mode,
+                      photon_number:this.dataForm.photon_number,
+                      uuid:this.dataForm.uuid
+                    })
                     this.$message({
                       message: 'Success',
                       type: 'success',
