@@ -11,13 +11,13 @@ public class MPQwsEntity {
     @TableId
     private int id;
 
-    private String stat_method;
+    private String statMethod;
     private String iniRawState;
     private String distance;
     private String probRawStates;
     private String perspectives;
     private String colorbar;
-    private String photon_number;
+    private String photonNumber;
     private String mode;
     private String uuid;
 }
