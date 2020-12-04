@@ -1,9 +1,15 @@
-package com.qutronix.cloud.feynmanserver.dto;
+package com.qutronix.cloud.feynmanserver.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
-public class TwoD_Qws {
+@TableName("tdqws")
+public class TdQwsEntity {
+
+    @TableId
+    private int id;
 
     private String uuid;
 
@@ -15,5 +21,4 @@ public class TwoD_Qws {
     private String nodeId;
     private String times;
     private String colorbar;
-
 }
