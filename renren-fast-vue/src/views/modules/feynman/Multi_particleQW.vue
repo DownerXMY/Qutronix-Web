@@ -347,9 +347,9 @@ import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
            'probStates': '|000020001>;|3,1;5,1;8,1>;|1,1;8,1;9,1>',
            'perspectives': '000000000',
            'colorbar': 'colorbar3',
-           'photon_number': 1,
+           'photonNumber': 1,
            'mode': 'view all states',
-           'stat_method': 'Bosonic',
+           'statMethod': 'Bosonic',
            uuid: ''
         },
         MPQW_Path1: '',
@@ -457,7 +457,7 @@ import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
     // Statistical Methods
     showMessage(e1) {
         this.$message('Choose Statistical Method "'+e1+'"');
-        this.dataForm.stat_method = e1
+        this.dataForm.statMethod = e1
     },
     // Choose Styles
     showMode(e2) {
@@ -473,7 +473,7 @@ import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
     // Choose photon number
     showPhotonNum(e4) {
         this.$message('Choose photon number "'+e4+'"');
-        this.dataForm.photon_number = e4
+        this.dataForm.photonNumber = e4
     },
     // get the picture1
           plot1() {
@@ -489,8 +489,8 @@ import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
                     'probStates': this.dataForm.probStates,
                     'perspectives': this.dataForm.perspectives,
                     'colorbar': this.dataForm.colorbar,
-                    'photon_number': this.dataForm.photon_number,
-                    'stat_method': this.dataForm.stat_method,
+                    'photonNumber': this.dataForm.photonNumber,
+                    'statMethod': this.dataForm.statMethod,
                     'mode': this.dataForm.mode
                   })
                 }).then(({ data }) => {
@@ -503,14 +503,14 @@ import menuAddOrUpdateVue from '../sys/menu-add-or-update.vue';
                     this.index = this.index + 1;
                     this.MPQwsData.push({
                       Id:this.index,
-                      stat_method:this.dataForm.stat_method,
+                      stat_method:this.dataForm.statMethod,
                       iniState:this.dataForm.iniState,
                       probState:this.dataForm.probStates,
                       perspectives:this.dataForm.perspectives,
                       distance:this.dataForm.distance,
                       colorbar:this.dataForm.colorbar,
                       mode:this.dataForm.mode,
-                      photon_number:this.dataForm.photon_number,
+                      photon_number:this.dataForm.photonNumber,
                       uuid:this.dataForm.uuid
                     })
                     this.$message({
