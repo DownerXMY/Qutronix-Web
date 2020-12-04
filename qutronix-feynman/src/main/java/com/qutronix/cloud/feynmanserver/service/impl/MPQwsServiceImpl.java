@@ -6,9 +6,11 @@ import com.qutronix.cloud.feynmanserver.entity.BosonEntity;
 import com.qutronix.cloud.feynmanserver.entity.MPQwsEntity;
 import com.qutronix.cloud.feynmanserver.service.MPQwsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class MPQwsServiceImpl implements MPQwsService {
 
     @Autowired
