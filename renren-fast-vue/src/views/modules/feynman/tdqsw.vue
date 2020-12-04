@@ -39,6 +39,85 @@
       </el-aside>
 
       </el-container>
+      <el-main style="text-align: center; height: 300; background-color: rgb(125, 231, 89)">
+        <el-row>
+          <el-col :span="12">
+            <el-button type="warning" round @click="loadRecords()">Load Records</el-button>
+          </el-col>
+          <el-col :span="12">
+            <el-button type="warning" round @click="clearRecords()">Clear All</el-button>
+          </el-col>
+        </el-row>
+          <el-table
+            :data="TDQWS_Data"
+            height="280"
+            border
+            empty-text="No record yet"
+            style="width: 100%">
+            <el-table-column
+              prop="Id"
+              label="Id"
+              width="50">
+            </el-table-column>
+            <el-table-column
+              prop="inputNum"
+              label="inputNum"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="amplitude"
+              label="amplitude"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="gap"
+              label="gap"
+              width="80">
+            </el-table-column>
+            <el-table-column
+              prop="fData"
+              label="fData"
+              width="80">
+            </el-table-column>
+            <el-table-column
+              prop="tData"
+              label="tData"
+              width="80">
+            </el-table-column>
+            <el-table-column
+              prop="noteId"
+              label="noteId"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="times"
+              label="times"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="colorbar"
+              label="colorbar"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="imgUrl"
+              label="imgUrl"
+              width="120">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="success"
+                  @click="getDraw(scope.row)">plot</el-button>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="Uuid"
+              label="Uuid"
+              width="60"
+              v-if="show">
+            </el-table-column>
+          </el-table>
+      </el-main>
 
     </el-container>
     <el-aside width="20px" style="background-color: rgb(0, 0, 0)"></el-aside>
@@ -102,7 +181,7 @@
           </el-col>
           <el-col :span="6">
             <div class="grid-content bg-purple-light">
-              <el-input v-model="dataForm.interval" placeholder=""></el-input>
+              <el-input v-model="dataForm.gap" placeholder=""></el-input>
             </div>
           </el-col>
           <el-col :span="3">
@@ -112,7 +191,7 @@
           </el-col>
           <el-col :span="3">
             <div class="grid-content bg-purple-light">
-              <el-input v-model="dataForm.from" placeholder=""></el-input>
+              <el-input v-model="dataForm.fData" placeholder=""></el-input>
             </div>
           </el-col>
           <el-col :span="3">
@@ -122,7 +201,7 @@
           </el-col>
           <el-col :span="3">
             <div class="grid-content bg-purple-light">
-              <el-input v-model="dataForm.to" placeholder=""></el-input>
+              <el-input v-model="dataForm.tData" placeholder=""></el-input>
             </div>
           </el-col>
         </el-row>
@@ -252,12 +331,15 @@ export default {
   data() {
     return {
       visible: false,
+      show: false,
+      TDQWS_Data: [],
+      index: 0,
       dataForm: {
         'inputNum': 13,
         'amplitude': 1,
-        'interval': 0.1,
-        'from': 2,
-        'to': 5,
+        'gap': 0.1,
+        'fData': 2,
+        'tData': 5,
         'nodeId': '13,1',
         'times': 10,
         'colorbar': 'colorbar_colorbar3',
@@ -273,6 +355,41 @@ export default {
     this.getQwsResult()
   },
   methods: {
+    // take Drqwing
+    getDraw(row) {
+      this.qwsPath2 = this.$http.adornUrl(`/feynman/server2/result?fileName=`+row.uuid+"_fileName");
+      this.qwsPath = this.$http.adornUrl(`/feynman/server2/result?fileName=`+row.uuid+"_figure1");
+    },
+    // Clear records
+    clearRecords() {
+      this.index = 0;
+      this.TDQWS_Data = [];
+    },
+    // Load Records
+    loadRecords() {
+      console.log("loading data from tdqws...");
+      this.$http({
+        url: this.$http.adornUrl('/feynman/server2/TdQws/result'),
+        method: "post"
+        }).then(({data}) => {
+          console.log(data);
+          for (var amount=0;amount<data.data.length;amount++) {
+            this.index = this.index + 1;
+              this.TDQWS_Data.push({
+                Id:this.index,
+                inputNum:data.data[amount].inputNum,
+                amplitude:data.data[amount].amplitude,
+                gap:data.data[amount].gap,
+                fData:data.data[amount].fData,
+                tData:data.data[amount].tData,
+                nodeId:data.data[amount].nodeId,
+                times:data.data[amount].times,
+                colorbar:data.data[amount].colorbar,
+                uuid:data.data[amount].uuid
+              });
+            }
+        }); 
+    },
     // Colorbar Mode
     handleCommand(command) {
         this.$message('Choose ColorMode "'+command+'"');
@@ -295,9 +412,9 @@ export default {
               'uuid': getUUID(),
               'inputNum': this.dataForm.inputNum,
               'amplitude': this.dataForm.amplitude,
-              'interval': this.dataForm.interval,
-              'from': this.dataForm.from,
-              'to': this.dataForm.to,
+              'interval': this.dataForm.gap,
+              'from': this.dataForm.fData,
+              'to': this.dataForm.tData,
               'nodeId': this.dataForm.nodeId,
               'times': this.dataForm.times
             })
@@ -331,9 +448,9 @@ export default {
               'uuid': getUUID(),
               'inputNum': this.dataForm.inputNum,
               'amplitude': this.dataForm.amplitude,
-              'interval': this.dataForm.interval,
-              'from': this.dataForm.from,
-              'to': this.dataForm.to,
+              'gap': this.dataForm.gap,
+              'fData': this.dataForm.fData,
+              'tData': this.dataForm.tData,
               'nodeId': this.dataForm.nodeId,
               'times': this.dataForm.times,
               'colorbar': this.dataForm.colorbar
@@ -342,6 +459,19 @@ export default {
             if (data && data.status === 200) {
               this.qwsPath2 = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.fileName)
               this.qwsPath = this.$http.adornUrl(`/feynman/server2/result?fileName=` + data.data.figure1)
+              this.index = this.index + 1;
+              this.TDQWS_Data.push({
+                Id:this.index,
+                inputNum:this.dataForm.inputNum,
+                amplitude:this.dataForm.amplitude,
+                gap:this.dataForm.gap,
+                fData:this.dataForm.fData,
+                tData:this.dataForm.tData,
+                nodeId:this.dataForm.nodeId,
+                times:this.dataForm.times,
+                colorbar:this.dataForm.colorbar,
+                uuid:this.dataForm.uuid
+              });
               this.$message({
                 message: '操作成功',
                 type: 'success',
