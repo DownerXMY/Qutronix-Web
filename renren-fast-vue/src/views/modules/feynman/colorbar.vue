@@ -4,18 +4,18 @@
       <div slot="header" class="clearfiximg" align="center">
         <el-dropdown @command="colorTypeSelect">
           <span class="el-dropdown-link">
-            {{colorType}}<i class="el-icon-arrow-down el-icon--right"></i>
+            {{colorbar}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="item in options"
-                              v-text="item.label"
-                              :command="item.value"
-                              :key="item.value"
-            ></el-dropdown-item>
+            <el-dropdown-item v-for="item in options" v-text="item.label" :command="item.value" :key="item.value">
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <img :src="colorbarPath" class="img_colorbar">
+      <div align="center">
+        <img :src="colorbarPath" class="img_colorbar">
+      </div>
+
     </el-card>
 
   </div>
@@ -51,13 +51,23 @@ export default {
       }],
       value: '',
       MPQW_Path4: '',
-      colorType: 'rainbow'
+      colorType: 'colorbar3',
+      colorbarPath:window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_' + 'colorbar3' + '.png'
     }
   },
   methods: {
     colorTypeSelect(type) {  // 下拉列表的点击事件
-      this.colorType = type
-       this.colorbarPath = window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_'+type+'.png'
+      this.colorbar = type
+      this.colorbarPath = window.SITE_CONFIG.cdnUrl + '/static/img/colorbar_' + type + '.png'
+    }
+  },
+  computed: {
+    colorbar: {
+      get() { return this.$store.state.feynmandata.qws_colorbar },
+      set(val) {
+        this.$store.commit('feynmandata/updateQwsColorbar', val)
+      }
+
     }
   }
 }

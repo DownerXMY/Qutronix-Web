@@ -3,7 +3,6 @@
     :close-on-click-modal="false"
     :visible.sync="visible"
     width="80%"
-    fullscreen="true"
   >
     <div
       id="app"
