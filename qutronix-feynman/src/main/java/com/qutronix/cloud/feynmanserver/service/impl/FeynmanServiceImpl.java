@@ -57,7 +57,7 @@ public class FeynmanServiceImpl implements FeynmanService {
             x.set(i + 1, Double.parseDouble(tableDataDTO.getX()));
             y.set(i + 1, Double.parseDouble(tableDataDTO.getY()));
         }
-        jQws.j_qws_f(qwsFileDTO.getFz(), qwsFileDTO.getInn(), x, y, "colorbar_coolwarm", file, "30", "10");
+        jQws.j_qws_f(qwsFileDTO.getFz(), qwsFileDTO.getInn(), x, y, "colorbar_"+qwsFileDTO.getColorbar(), file, "30", "10");
         return qwsFileDTO.getUuid();
     }
 }

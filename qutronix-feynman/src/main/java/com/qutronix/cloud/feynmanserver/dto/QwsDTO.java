@@ -27,4 +27,5 @@ public class QwsDTO {
 
     private String colorbar;
 
+    private String executor;
 }

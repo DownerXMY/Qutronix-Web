@@ -18,4 +18,8 @@ public class QwsFileDTO {
 
     private TableDataDTO[] tabledata;
 
+    private String colorbar;
+
+    private String executor;
+
 }
