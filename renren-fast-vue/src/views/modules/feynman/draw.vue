@@ -1,69 +1,30 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <el-dialog
-    :close-on-click-modal="false"
-    :visible.sync="visible"
-    width="80%"
-  >
-    <div
-      id="app"
-      class="joint-app joint-theme-modern"
-    >
+  <el-dialog :close-on-click-modal="false" :visible.sync="visible" width="50%">
+    <div id="app" class="joint-app joint-theme-modern">
       <div class="app-header">
         <div class="app-title">
           <h1 align="center"></h1>
         </div>
         <div class="toolbar-container">
           <el-button type="info" disabled style="width: 45%">DIY QWS</el-button>
-          <button
-            id="clearGraph"
-            style="font-size: 20px; margin-left: 10px"
-          >
+          <button id="clearGraph" style="font-size: 20px; margin-left: 10px">
             Clear All
           </button>
-          <button
-            id="makeSure"
-            @click="backToQws()"
-            style="font-size: 20px; margin-left: 10px"
-          >
+          <button id="makeSure" @click="backToQws()" style="font-size: 20px; margin-left: 10px">
             Confirm
           </button>
         </div>
       </div>
       <div class="app-body">
-        <div
-          class="stencil-container"
-          id="stencil"
-        ></div>
-        <div
-          class="paper-container"
-          id="paper"
-          @mousemove="updateXY"
-        ></div>
+        <div class="stencil-container" id="stencil"></div>
+        <div class="paper-container" id="paper" @mousemove="updateXY"></div>
         <div class="inspector-container">
-          <el-table
-            :data="tData"
-            border
-            empty-text="No point yet"
-            style="width: 100%"
-            height="600px"
-          >
-            <el-table-column
-              prop="id"
-              label="id"
-              width="40"
-            >
+          <el-table :data="tData" border empty-text="No point yet" style="width: 100%" height="600px">
+            <el-table-column prop="id" label="id" width="40">
             </el-table-column>
-            <el-table-column
-              prop="x_coordinate"
-              label="x_coor"
-              width="100"
-            >
+            <el-table-column prop="x_coordinate" label="x_coor" width="100">
             </el-table-column>
-            <el-table-column
-              prop="y_coordinate"
-              label="y_coor"
-              width="100"
-            >
+            <el-table-column prop="y_coordinate" label="y_coor" width="100">
             </el-table-column>
           </el-table>
         </div>
@@ -111,7 +72,14 @@ export default {
     });
     // this.shaps()
   },
-  computed: {},
+  computed: {
+    qwsTabledata: {
+      get() { return this.$store.state.feynmandata.qwsTabledata },
+      set(val) {
+        this.$store.commit('feynmandata/updateQwsTabledata', val)
+      }
+    }
+  },
   created() {
     this.inti();
   },
@@ -139,8 +107,14 @@ export default {
       cell.attr("body/fill", color);
     },
     backToQws() {
+      console.log("draw backto qws")
       this.visible = false;
-      this.$emit("refreshDrawData", this.coordinates);
+      this.qwsTabledata = this.coordinates
+      this.qwsTabledata = this.qwsTabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
+      this.coordinates = []
+      this.tData = []
+
+      //this.$emit("refreshDrawData", this.coordinates);
     },
 
     inti() {
@@ -248,13 +222,13 @@ export default {
       });
 
       paper.on("cell:pointerdblclick", (cellView, e, x, y) => {
-        console.log(cellView.model.attributes.attrs.label.text-1);
+        console.log(cellView.model.attributes.attrs.label.text - 1);
         cellView.model.remove();
         // console.log(this);
-        for(var i=0;i<this.tData.length;i++) {
+        for (var i = 0; i < this.tData.length; i++) {
           if (this.tData[i].id == cellView.model.attributes.attrs.label.text) {
-            this.tData.splice(i,1);
-            this.coordinates.splice(i,1);
+            this.tData.splice(i, 1);
+            this.coordinates.splice(i, 1);
           }
         }
         // console.log(this.tData);
@@ -265,9 +239,9 @@ export default {
       paper.on("blank:pointerdown", (e, x, y) => {
         [_x, _y] = [e.offsetX, e.offsetY];
         // console.log(this);
-        this.num = this.num+1;
+        this.num = this.num + 1;
         this.coordinates = this.coordinates.concat([[_x, _y]]);
-        this.tData.push({id:this.num,x_coordinate:_x,y_coordinate:_y});
+        this.tData.push({ id: this.num, x_coordinate: _x, y_coordinate: _y });
         console.log(this.coordinates);
         console.log("getCloneOnPaper");
         $("body").append(
@@ -286,7 +260,7 @@ export default {
             size: { width: 10, height: 10 },
             attrs: {
               body: { stroke: "black", fill: "#f1f0f1" },
-              label: { text: "      "+this.num, fontSize: 16 },
+              label: { text: "      " + this.num, fontSize: 16 },
             },
           }),
           offset = {
@@ -426,7 +400,7 @@ export default {
       let [new_x, new_y] = [0, 0];
       paper.on("cell:pointerup", (cellView, evt, x, y) => {
         [new_x, new_y] = [evt.offsetX, evt.offsetY];
-        for(var num=0;num<this.tData.length;num++) {
+        for (var num = 0; num < this.tData.length; num++) {
           if (this.tData[num].id == cellView.model.attributes.attrs.label.text) {
             this.tData[num].x_coordinate = new_x;
             this.tData[num].y_coordinate = new_y;
@@ -591,4 +565,5 @@ body,
   -ms-user-select: none;
   user-select: none;
 }
+
 </style>

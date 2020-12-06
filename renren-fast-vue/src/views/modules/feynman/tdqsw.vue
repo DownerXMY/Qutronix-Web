@@ -449,8 +449,8 @@ export default {
               'inputNum': this.dataForm.inputNum,
               'amplitude': this.dataForm.amplitude,
               'gap': this.dataForm.gap,
-              'fData': this.dataForm.fData,
-              'tData': this.dataForm.tData,
+              'fdata': this.dataForm.fData,
+              'tdata': this.dataForm.tData,
               'nodeId': this.dataForm.nodeId,
               'times': this.dataForm.times,
               'colorbar': this.dataForm.colorbar

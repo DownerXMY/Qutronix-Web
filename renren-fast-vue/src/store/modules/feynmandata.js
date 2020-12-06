@@ -7,6 +7,7 @@ export default {
       imgloading:"",
       qwsimgcontainer:"",
       qwsHisData:[],
+      qwsTabledata: ''
     },
     mutations: {
       updateDx (state, dx) {
@@ -20,6 +21,15 @@ export default {
       },
       updateQwsHisData (state,hisdata) {
         state.qwsHisData = hisdata
+      },
+      updateQwsTabledata (state,qwsTabledata) {
+        state.qwsTabledata = qwsTabledata
+      },
+      updateQwsimgcontainer (state,qwsimgcontainer) {
+        state.qwsimgcontainer = qwsimgcontainer
+      },
+      updateImgloading (state,imgloading) {
+        state.imgloading = imgloading
       },
     
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="div_colorbar">
+  <div class="div_colorbar"  style="width:100px;height:500px">
     <el-card shadow="never" class="card">
       <div slot="header" class="clearfiximg" align="center">
         <el-dropdown @command="colorTypeSelect">
@@ -77,8 +77,8 @@ export default {
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 20px;
-  width: 100%;
-  height: 740px;
+  width: 60px;
+  height: 600px;
   background: white;
   border: 0px solid #eee;
   border-style: dashed;
@@ -89,5 +89,12 @@ export default {
   width: auto;
   height: auto;
   border: 0px solid #eee;
+}
+.el-dropdown {
+    display: inline-block;
+    position: relative;
+    color: #606266;
+    font-size: 16px;
+     font-weight: bold;
 }
 </style>

@@ -2,26 +2,26 @@
   <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
     label-width="220px">
 
-    <el-form-item label="Prpagation Distance z(mm)">
+    <el-form-item label="Prpagation Distance z(mm)" label-width="260px">
       <el-input v-model="dataForm.dx"></el-input>
     </el-form-item>
-    <el-form-item label="Num of nodes in x">
+    <el-form-item label="Num of nodes in x" label-width="260px">
       <el-input v-model="dataForm.x"></el-input>
     </el-form-item>
-    <el-form-item label="Num of nodes in y">
+    <el-form-item label="Num of nodes in y" label-width="260px">
       <el-input v-model="dataForm.y"></el-input>
     </el-form-item>
-    <el-form-item label="Inject point of x">
+    <el-form-item label="Inject point of x" label-width="260px">
       <el-input v-model="dataForm.px"></el-input>
     </el-form-item>
-    <el-form-item label="Inject point of y">
+    <el-form-item label="Inject point of y" label-width="260px">
       <el-input v-model="dataForm.py"></el-input>
     </el-form-item>
 
-    <el-form-item label="Waveguide spacing in x(um)">
+    <el-form-item label="Waveguide spacing in x(um)" label-width="260px">
       <el-input v-model="dataForm.dx"></el-input>
     </el-form-item>
-    <el-form-item label="Waveguide spacing in y(um)">
+    <el-form-item label="Waveguide spacing in y(um)" label-width="260px">
       <el-input v-model="dataForm.dy"></el-input>
     </el-form-item>
     <el-form-item label="">
@@ -65,9 +65,10 @@ export default {
     // 表单提交
     plot() {
       this.$refs['dataForm'].validate((valid) => {
+
         if (valid) {
-          this.$store.state.feynmandata.qwsimgcontainer.style.display = "none";
-          this.$store.state.feynmandata.imgloading.style.display = "block";
+          this.qwsimgcontainer.style.display = "none";
+          this.imgloading.style.display = "block";
           this.qwsPath = this.$http({
             url: this.$http.adornUrl(`/feynman/server/plot`),
             method: 'post',
@@ -80,7 +81,8 @@ export default {
               'py': this.dataForm.py,
               'dx': this.dataForm.dx,
               'dy': this.dataForm.dy,
-              'colorbar': this.colorbar
+              'colorbar': this.colorbar,
+              'executor': this.$store.state.user.name
 
             })
           }).then(({ data }) => {
@@ -89,8 +91,8 @@ export default {
 
               this.num = this.num + 1;
               this.qwsimg = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName);
-              this.$store.state.feynmandata.qwsimgcontainer.style.display = "block";
-              this.$store.state.feynmandata.imgloading.style.display = "none";
+              this.qwsimgcontainer.style.display = "block";
+              this.imgloading.style.display = "none";
               //  this.tData.push({ Id: this.num, z: this.dataForm.z, x: this.dataForm.x, y: this.dataForm.y, dx: this.dataForm.dx, dy: this.dataForm.dy, px: this.dataForm.px, py: this.dataForm.py, Fz: this.dataForm.fz, Inn: this.dataForm.inn, Uuid: this.dataForm.uuid });
 
               this.loadtasks();
@@ -106,6 +108,8 @@ export default {
               })
             } else {
               this.$message.error(data.msg)
+              this.qwsimgcontainer.style.display = "none";
+              this.imgloading.style.display = "none";
             }
           })
         }
@@ -117,7 +121,7 @@ export default {
         url: this.$http.adornUrl('/feynman/server/qws/result'),
         method: "post"
       }).then(({ data }) => {
-         console.log(data.data);
+        console.log(data.data);
         this.tData = data.data
       });
     }
@@ -142,7 +146,18 @@ export default {
       set(val) {
         this.$store.commit('feynmandata/updateQwsHisData', val)
       }
+    }, qwsimgcontainer: {
+      get() { return this.$store.state.feynmandata.qwsimgcontainer },
+      set(val) {
+        this.$store.commit('feynmandata/updateQwsimgcontainer', val)
+      }
+    }, imgloading: {
+      get() { return this.$store.state.feynmandata.imgloading },
+      set(val) {
+        this.$store.commit('feynmandata/updateImgloading', val)
+      }
     }
+
 
   }
 };

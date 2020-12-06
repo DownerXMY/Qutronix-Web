@@ -1,11 +1,11 @@
 <template>
-  <div class="div_imgmain">
-    <el-card shadow="never" class="card" style="width:700px;height:740px">
+  <div class="div_imgmain" style="width:650px;height:800px">
+    <el-card shadow="never" class="card" >
       <div slot="header" class="clearfiximg" align="center">
-        <span class="title">Two Dimensional Quantum Walks</span>
+        <span id="text3d">Two Dimensional Quantum Walks</span>
       </div>
 
-      <div align="center" style="width:700px;height:700px">
+      <div align="center" style="width:650px;height:650px">
         <img :src="qwsimg" style="width:auto;height:auto;" class="qwsimgcontainer" ref="qwsimgcontainer">
         <img :src="bsPath" style="width:600px;height:600px" ref="imgloading">
       </div>
@@ -58,6 +58,8 @@ export default {
   padding: 0px;
 }
 .div_imgmain {
+  height: "640px";
+  width: "600px";
   padding-left: 10px;
   padding-right: 10px;
   height: 760px;
@@ -73,4 +75,20 @@ export default {
   width: "600px";
   border: "1px solid #eee";
 }
+.div.el-card__header{
+     padding: 0px 0px 0px 0px;
+}
+#text3d {
+     color: #70869d;
+     font: bold 30px/0px arial, sans-serif, "宋体";
+    letter-spacing: .1em;
+    text-shadow: 
+      -1px -1px 1px #efede3, 
+      0px 1px 0 #2e2e2e, 
+      0px 2px 0 #2c2c2c, 
+      0px 3px 0 #2a2a2a,
+      0px 4px 0 #282828, 
+      0px 5px 0 #262626, 
+      0px 6px 0 #242424;
+ }
 </style>
