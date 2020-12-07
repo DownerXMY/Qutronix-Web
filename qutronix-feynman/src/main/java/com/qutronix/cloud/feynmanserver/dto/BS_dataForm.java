@@ -11,4 +11,6 @@ public class BS_dataForm {
     private String iniState;
 
     private String feature;
+
+    private String executor;
 }

@@ -15,5 +15,6 @@ public class TwoD_Qws {
     private String nodeId;
     private String times;
     private String colorbar;
+    private String executor;
 
 }

@@ -3,6 +3,7 @@ package com.qutronix.cloud.feynmanserver.controller;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynmanserver.business.FeynmanBusiness;
+import com.qutronix.cloud.feynmanserver.config.FeynmanConfig;
 import com.qutronix.cloud.feynmanserver.dto.*;
 import com.qutronix.cloud.feynmanserver.entity.FeynmanTaskEntity;
 import com.qutronix.cloud.feynmanserver.entity.QwsEntity;
@@ -67,14 +68,13 @@ public class FeynmanController {
     public R list() throws Exception {
         ApplicationHome applicationHome = new ApplicationHome();
         log.info("applicationHome:{}", applicationHome.getDir().getAbsolutePath());
-        feynmanService.feynmanTest();
         return R.ok();
     }
 
     @GetMapping(value = "/result", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
-        return ImageIO.read(new FileInputStream(new File("F:\\qutronix\\images\\" + fileName + ".png")));
+        return ImageIO.read(new FileInputStream(new File( FeynmanConfig.filePath + fileName + FeynmanConfig.fileSuffix)));
     }
 
 

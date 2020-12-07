@@ -2,6 +2,7 @@ package com.qutronix.cloud.feynmanserver.service.impl;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 import com.qutronix.cloud.feynman.JQws;
+import com.qutronix.cloud.feynmanserver.config.FeynmanConfig;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService2;
@@ -35,9 +36,9 @@ public class FeynmanServiceImpl2 implements FeynmanService2 {
         if (StringUtils.isNotEmpty(twoD_qws.getColorbar())) {
             colorbar = twoD_qws.getColorbar();
         }
-        String filePath = "F:\\qutronix\\images\\" + twoD_qws.getUuid() + ".jpg";// "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
+        String filePath = FeynmanConfig.filePath+ twoD_qws.getUuid() + FeynmanConfig.fileSuffix;// "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
         String figureName= twoD_qws.getUuid() + "_f1";
-        String figurePath = "F:\\qutronix\\images\\" + figureName + ".jpg";
+        String figurePath = FeynmanConfig.filePath + figureName +FeynmanConfig.fileSuffix;
         JQws jQws = new JQws();
         jQws.j_qsws(twoD_qws.getFData(), twoD_qws.getTData(),
                 twoD_qws.getGap(), twoD_qws.getAmplitude(),
