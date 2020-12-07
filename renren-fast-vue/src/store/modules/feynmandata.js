@@ -4,8 +4,24 @@ export default {
       dx:"",
       qws_colorbar: "colorbar3",
       qws_img:"",
+      qswsImg:"",
+      qswsView:"",
+      bosonImg:"",
+      bosonView:"",
+
       imgloading:"",
+      imgloadingQsws:"",
+      imgloadingQswsView:"",
+      imgloadingBoson:"",
+      imgloadingBosonView:"",
+
       qwsimgcontainer:"",
+      qwsimgcontainerQsws:"",
+      qwsimgcontainerBoson:"",
+
+      qwsimgcontainerQswsView:"",
+      qwsimgcontainerBosonView:"",
+
       qwsHisData:[],
       qwsTabledata: ''
     },
@@ -18,6 +34,12 @@ export default {
       },
       updateQwsImg (state,img) {
         state.qws_img = img
+      },
+      updateQswsImg (state,qswsImg) {
+        state.qswsImg = qswsImg
+      },
+      updateQswsView (state,qswsView) {
+        state.qswsView = qswsView
       },
       updateQwsHisData (state,hisdata) {
         state.qwsHisData = hisdata
