@@ -3,20 +3,34 @@
   <div class="mod-config">
     <div class="btnDiv">
       <el-button type="primary" @click="showParameterset()">Parameter Set</el-button>
-      <el-button type="primary" @click="showManualSet()">Manually Set</el-button>
       <el-button type="primary" @click="showFeynmanTask()">Task</el-button>
     </div>
-    <div align="left" style="width:800px;height:800px">
-      <el-container>
-        <el-main>
-          <QImage></QImage>
-        </el-main>
 
-        <el-aside width="120px">
-          <Colorbar></Colorbar>
-        </el-aside>
-      </el-container>
-    </div>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <div align="left" style="width:800px;height:800px">
+          <el-container>
+            <el-main>
+              <QImage></QImage>
+            </el-main>
+
+            <el-aside width="120px">
+              <Colorbar></Colorbar>
+            </el-aside>
+          </el-container>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div align="left" style="width:800px;height:800px">
+          <el-container>
+            <el-main>
+              <QswsView></QswsView>
+            </el-main>
+          </el-container>
+        </div>
+
+      </el-col>
+    </el-row>
 
     <div>
 
@@ -39,21 +53,21 @@
 
 </template>
 <script>
-import QImage from './qws_img'
-import QTab from './qws_tab'
+import QImage from './qsws_img'
+import QswsView from './qsws_view'
 import Colorbar from '../colorbar'
 import FeynmanTask from '../feynmanTask'
 import drawer from '@/components/drawer/drawer'
 import DrawTablePoint from '../draw'
-import QwsParaSet from './qws_para'
-import QwsManualSet from './qws_manual'
+import QwsParaSet from './qsws_para'
+import QwsManualSet from './qsws_manual'
 export default {
   data() {
     return {
-      taskType: 'qws',
+      taskType: 'qsws',
       drawTablePointVisible: false,
       parameterSet: {
-        display: true,
+        display: false,
         drawerWidth: '700px',
       },
       manualSet: {
@@ -70,7 +84,7 @@ export default {
   },
   components: {
     QImage,
-    QTab,
+    QswsView,
     Colorbar,
     FeynmanTask,
     drawer,
@@ -123,7 +137,7 @@ export default {
   },
   computed: {
     tabledata: {
-       get() { return this.$store.state.feynmandata.qwsTabledata },
+      get() { return this.$store.state.feynmandata.qwsTabledata },
       set(val) {
         this.$store.commit('feynmandata/updateQwsTabledata', val)
       }

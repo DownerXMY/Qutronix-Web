@@ -2,11 +2,11 @@
   <div class="div_imgmain" style="width:650px;height:800px">
     <el-card shadow="never" class="card" >
       <div slot="header" class="clearfiximg" align="center">
-        <span id="text3d">Two Dimensional Quantum Walks</span>
+        <span id="text3d">2D Quantum Stochastic Walks</span>
       </div>
 
       <div align="center" style="width:650px;height:650px">
-        <img :src="qwsimg" style="width:auto;height:auto;" class="qwsimgcontainer" ref="qwsimgcontainer">
+        <img :src="qswsImg" style="width:auto;height:auto;" class="qwsimgcontainer" ref="qwsimgcontainer">
         <img :src="bsPath" style="width:600px;height:600px" ref="imgloading">
       </div>
     </el-card>
@@ -37,14 +37,14 @@ export default {
     console.log("d_qws_img组件")
     this.$refs.imgloading.style.display = "none";//block
     this.$refs.qwsimgcontainer.style.display = "none";//block
-    this.$store.state.feynmandata.imgloading = this.$refs.imgloading
-    this.$store.state.feynmandata.qwsimgcontainer = this.$refs.qwsimgcontainer
+    this.$store.state.feynmandata.imgloadingQsws = this.$refs.imgloading
+    this.$store.state.feynmandata.qwsimgcontainerQsws = this.$refs.qwsimgcontainer
 
   }
   ,
   computed: {
-    qwsimg: {
-      get() { return this.$store.state.feynmandata.qws_img },
+    qswsImg: {
+      get() { return this.$store.state.feynmandata.qswsImg },
     }
   }
 }

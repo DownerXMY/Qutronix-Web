@@ -82,29 +82,36 @@ export default {
     plotFile() {
       console.log("qws plot file")
       console.log(this.colorbar)
-       console.log(this.qwsTabledata)
+      console.log(this.qwsTabledata)
 
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-            this.qwsimgcontainer.style.display = "none";
-          this.imgloading.style.display = "block";
-          this.qwsPath = this.$http({
+          this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "none";
+          this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "none";
+          this.$store.state.feynmandata.imgloadingBoson.style.display = "block";
+          this.$store.state.feynmandata.imgloadingBosonView.style.display = "block";
+          this.$http({
             url: this.$http.adornUrl(`/feynman/server/plotfile`),
             method: 'post',
             data: this.$http.adornData({
               'uuid': getUUID(),
               'inn': this.dataForm.inn,
               'fz': this.dataForm.fz,
-              'tabledata':this.qwsTabledata,
+              'tabledata': this.qwsTabledata,
               'colorbar': this.colorbar,
               'executor': this.$store.state.user.name
             })
           }).then(({ data }) => {
             console.log('data=' + data + 'data.status=' + data.status)
             if (data && data.status === 200) {
-              this.qwsimg = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName);
-                    this.qwsimgcontainer.style.display = "block";
-              this.imgloading.style.display = "none";
+              this.$store.state.feynmandata.bosonImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.distribution);
+
+              this.$store.state.feynmandata.bosonView = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.waveguides);
+
+              this.$store.state.feynmandata.imgloadingBoson.style.display = "none";
+              this.$store.state.feynmandata.imgloadingBosonView.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "block";
+              this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "block";
               //  this.qws.width = Math.ceil(this.qws.height / this.qws.width * 600) + 'px'
               this.$message({
                 message: '操作成功',
@@ -117,8 +124,10 @@ export default {
               })
             } else {
               this.$message.error(data.msg)
-                    this.qwsimgcontainer.style.display = "none";
-              this.imgloading.style.display = "none";
+               this.$store.state.feynmandata.imgloadingBoson.style.display = "none";
+              this.$store.state.feynmandata.imgloadingBosonView.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "none";
             }
           })
         }
@@ -191,7 +200,7 @@ export default {
       set(val) {
         this.$store.commit('feynmandata/updateQwsTabledata', val)
       }
-    },qwsimgcontainer: {
+    }, qwsimgcontainer: {
       get() { return this.$store.state.feynmandata.qwsimgcontainer },
       set(val) {
         this.$store.commit('feynmandata/updateQwsimgcontainer', val)

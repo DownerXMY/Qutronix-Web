@@ -2,28 +2,26 @@
   <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
     label-width="220px">
 
-    <el-form-item label="Prpagation Distance z(mm)" label-width="260px">
-      <el-input v-model="dataForm.dx"></el-input>
+    <el-form-item label="Inject num" label-width="260px">
+      <el-input v-model="dataForm.inputNum"></el-input>
     </el-form-item>
-    <el-form-item label="Num of nodes in x" label-width="260px">
-      <el-input v-model="dataForm.x"></el-input>
+    <el-form-item label="δβ Amplitude" label-width="260px">
+      <el-input v-model="dataForm.amplitude"></el-input>
     </el-form-item>
-    <el-form-item label="Num of nodes in y" label-width="260px">
-      <el-input v-model="dataForm.y"></el-input>
+    <el-form-item label="Z Interval(nm)" label-width="260px">
+      <el-input v-model="dataForm.gap"></el-input>
     </el-form-item>
-    <el-form-item label="Inject point of x" label-width="260px">
-      <el-input v-model="dataForm.px"></el-input>
+    <el-form-item label="From" label-width="260px">
+      <el-input v-model="dataForm.fData"></el-input>
     </el-form-item>
-    <el-form-item label="Inject point of y" label-width="260px">
-      <el-input v-model="dataForm.py"></el-input>
+    <el-form-item label="To" label-width="260px">
+      <el-input v-model="dataForm.tData"></el-input>
     </el-form-item>
 
-    <el-form-item label="Waveguide spacing in x(um)" label-width="260px">
-      <el-input v-model="dataForm.dx"></el-input>
+    <el-form-item label="View Probability For Node No" label-width="260px">
+      <el-input v-model="dataForm.nodeId"></el-input>
     </el-form-item>
-    <el-form-item label="Waveguide spacing in y(um)" label-width="260px">
-      <el-input v-model="dataForm.dy"></el-input>
-    </el-form-item>
+
     <el-form-item label="">
       <el-row type="flex" class="row-bg" style="margin-bottom: 10px;margin-top:10px;" justify="center">
         <el-col :span="10" justify="center">
@@ -47,15 +45,13 @@ export default {
   data() {
     return {
       dataForm: {
-        'z': 5,
-        'x': 21,
-        'y': 21,
-        'px': 11,
-        'py': 11,
-        'dx': 15,
-        'dy': 15,
-        'fz': '3',
-        'inn': '2',
+        'inputNum': 13,
+        'amplitude': 1,
+        'gap': 0.1,
+        'fData': 2,
+        'tData': 5,
+        'nodeId': '13,1',
+        'times': 10,
         uuid: '',
         tabledata: ''
       }
@@ -67,21 +63,23 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
 
         if (valid) {
-          this.qwsimgcontainer.style.display = "none";
-          this.imgloading.style.display = "block";
+          this.$store.state.feynmandata.qwsimgcontainerQsws.style.display = "none";
+          this.$store.state.feynmandata.qwsimgcontainerQswsView.style.display = "none";
+          this.$store.state.feynmandata.imgloadingQsws.style.display = "block";
+          this.$store.state.feynmandata.imgloadingQswsView.style.display = "block";
           this.qwsPath = this.$http({
-            url: this.$http.adornUrl(`/feynman/server/plot`),
+            url: this.$http.adornUrl(`/feynman/server2/plot3`),
             method: 'post',
             data: this.$http.adornData({
               'uuid': getUUID(),
-              'z': this.dataForm.z,
-              'x': this.dataForm.x,
-              'y': this.dataForm.y,
-              'px': this.dataForm.px,
-              'py': this.dataForm.py,
-              'dx': this.dataForm.dx,
-              'dy': this.dataForm.dy,
-              'colorbar': this.colorbar,
+              'inputNum': this.dataForm.inputNum,
+              'amplitude': this.dataForm.amplitude,
+              'gap': this.dataForm.gap,
+              'fdata': this.dataForm.fData,
+              'tdata': this.dataForm.tData,
+              'nodeId': this.dataForm.nodeId,
+              'times': this.dataForm.times,
+              'colorbar': "colorbar_" + this.colorbar,
               'executor': this.$store.state.user.name
 
             })
@@ -90,9 +88,13 @@ export default {
             if (data && data.status === 200) {
 
               this.num = this.num + 1;
-              this.qwsimg = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName);
-              this.qwsimgcontainer.style.display = "block";
-              this.imgloading.style.display = "none";
+              this.qswsImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.fileName);
+              this.$store.state.feynmandata.qswsView = this.$http.adornUrl(`/feynman/server/result?fileName=` + data.data.figure1);
+              this.$store.state.feynmandata.imgloadingQsws.style.display = "none";
+              this.$store.state.feynmandata.imgloadingQswsView.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerQsws.style.display = "block";
+              this.$store.state.feynmandata.qwsimgcontainerQswsView.style.display = "block";
+
               //  this.tData.push({ Id: this.num, z: this.dataForm.z, x: this.dataForm.x, y: this.dataForm.y, dx: this.dataForm.dx, dy: this.dataForm.dy, px: this.dataForm.px, py: this.dataForm.py, Fz: this.dataForm.fz, Inn: this.dataForm.inn, Uuid: this.dataForm.uuid });
 
               this.loadtasks();
@@ -108,8 +110,10 @@ export default {
               })
             } else {
               this.$message.error(data.msg)
-              this.qwsimgcontainer.style.display = "none";
-              this.imgloading.style.display = "none";
+              this.$store.state.feynmandata.imgloadingQsws.style.display = "none";
+              this.$store.state.feynmandata.imgloadingQswsView.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerQsws.style.display = "none";
+              this.$store.state.feynmandata.qwsimgcontainerQswsView.style.display = "none";
             }
           })
         }
@@ -136,9 +140,9 @@ export default {
       get() { return this.$store.state.feynmandata.qws_colorbar },
 
     },
-    qwsimg: {
+    qswsImg: {
       set(val) {
-        this.$store.commit('feynmandata/updateQwsImg', val)
+        this.$store.commit('feynmandata/updateQswsImg', val)
       }
     },
     tData: {
