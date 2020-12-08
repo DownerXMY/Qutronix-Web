@@ -74,6 +74,15 @@
             <h2>Text</h2>
 
             <div class="input-group mb-3 input-group-lg ">
+              <div style="font-size: 15px;margin-top: 10px;margin-right: 10px">nodeNumber</div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                v-model="nodeNumber"
+              >
+            </div>
+            <div class="input-group mb-3 input-group-lg ">
               <div style="font-size: 15px;margin-top: 10px;margin-right: 10px">Alpha</div>
               <input
                 type="text"
@@ -118,6 +127,7 @@
 export default {
   data() {
     return {
+      nodeNumber: 12,
       num: 0,
       tData: [],
       tabledata: "",
@@ -256,64 +266,88 @@ export default {
         interactive: false
       });
 
-      for (var number = 1; number <= 6; number++) {
+      const per = (450 - 450 % this.nodeNumber) / this.nodeNumber;
+      const half = (this.nodeNumber - this.nodeNumber % 2) / 2;
+      for (var number = 1; number <= half; number++) {
         let Nlink1 = new joint.shapes.standard.Link({
-          source: { x: 162, y: 36 * (2*number-1) },
-          target: { x: 558 - 72 * (number - 1), y: 432 }
+          source: { x: 360-per*(this.nodeNumber-1)/2, y: per*(2*number-1) },
+          target: { x: 360+per*(this.nodeNumber-1)/2-2*per*(number-1), y: per*this.nodeNumber}
         });
         let Nlink2 = new joint.shapes.standard.Link({
-          source: { x: 162, y: 72 * number },
-          target: { x: 162 + 36 * (2*number-1), y: 36 }
+          source: { x: 360-per*(this.nodeNumber-1)/2, y: 2*per*number },
+          target: { x: 360-per*(this.nodeNumber-1)/2+per*(2*number-1), y: per }
         });
         Nlink1.attr('line/stroke', '#e66f2b');
         Nlink2.attr('line/stroke', '#e66f2b');
         constGraph.addCells([Nlink1,Nlink2]);
       }
 
-      for (var number1 =1; number1<=5; number1++) {
+      for (var number1 =1; number1<=half-1; number1++) {
         let Nlink3 = new joint.shapes.standard.Link({
-          source: { x: 162 + 72*number1, y: 36 },
-          target: { x: 558, y: 432 - 72 * number1 }
+          source: { x: 360-per*(this.nodeNumber-1)/2+2*per*number1, y: per },
+          target: { x: 360+per*(this.nodeNumber+1)/2, y: per*this.nodeNumber-per*(2*number1-1) }
         });
         let Nlink4 = new joint.shapes.standard.Link({
-          source: { x: 162 + 72*number1, y: 432 },
-          target: { x: 558, y: 36 + 72*number1 }
+          source: { x: 360-per*(this.nodeNumber-1)/2+2*per*number1, y: per*this.nodeNumber },
+          target: { x: 360+per*(this.nodeNumber+1)/2, y: 2*per*number1 }
         });
         Nlink3.attr('line/stroke', '#e66f2b');
         Nlink4.attr('line/stroke', '#e66f2b');
         constGraph.addCells([Nlink3,Nlink4]);
       }
 
-      for (var number2 = 1; number2 <= 12; number2++) {
-        let Nlink5 = new joint.shapes.standard.Link({
-          source: { x: 558, y: 36 * number2 },
-          target: { x: 750, y: 36 * number2 }
-        });
-        let Nlink6 = new joint.shapes.standard.Link({
-          source: { x: 20, y: 36 * number2 },
-          target: { x: 162, y: 36 * number2 }
-        });
-        Nlink5.attr('line/stroke', '#e66f2b');
-        Nlink6.attr('line/stroke', '#e66f2b');
-        Nlink6.labels([{
+      for (var number2 = 1; number2 <= this.nodeNumber; number2++) {
+        if (number2 == 1 || number2 == this.nodeNumber) {
+          let Nlink5 = new joint.shapes.standard.Link({
+          source: { x: 360+per*(this.nodeNumber-1)/2, y: per*number2 },
+          target: { x: 750, y: per*number2 }
+          });
+          let Nlink6 = new joint.shapes.standard.Link({
+          source: { x: 20, y: per*number2 },
+          target: { x: 360-per*(this.nodeNumber-1)/2, y: per*number2 }
+          });
+          Nlink5.attr('line/stroke', '#e66f2b');
+          Nlink6.attr('line/stroke', '#e66f2b');
+          Nlink6.labels([{
             attrs: {
                 text: {
                     text: 'Node.'+number2,
                     fill: '#41584B'
                 }
             }
-        }]);
-        constGraph.addCells([Nlink5,Nlink6]);
+          }]);
+          constGraph.addCells([Nlink5,Nlink6]);
+        } else {
+          let Nlink5 = new joint.shapes.standard.Link({
+          source: { x: 360+per*(this.nodeNumber+1)/2, y: per*number2 },
+          target: { x: 750, y: per*number2 }
+          });
+          let Nlink6 = new joint.shapes.standard.Link({
+          source: { x: 20, y: per*number2 },
+          target: { x: 360-per*(this.nodeNumber-1)/2, y: per*number2 }
+          });
+          Nlink5.attr('line/stroke', '#e66f2b');
+          Nlink6.attr('line/stroke', '#e66f2b');
+          Nlink6.labels([{
+            attrs: {
+                text: {
+                    text: 'Node.'+number2,
+                    fill: '#41584B'
+                }
+            }
+          }]);
+          constGraph.addCells([Nlink5,Nlink6]);
+        }
       }
 
-      for (var number3 = 1; number3 <= 5; number3++) {
+      for (var number3 = 1; number3 <= half-1; number3++) {
         let Nlink6 = new joint.shapes.standard.Link({
-          source: { x: 162 + 36 * (2*number3-1), y: 36 },
-          target: { x: 162 + 36 * 2 * number3, y: 36 }
+          source: { x: 360-per*(this.nodeNumber-1)/2+per*(2*number3-1), y: per },
+          target: { x: 360-per*(this.nodeNumber-1)/2+per*2*number3, y: per }
         });
         let Nlink7 = new joint.shapes.standard.Link({
-          source: { x: 162 + 36 * (2*number3-1), y: 432 },
-          target: { x: 162 + 36 * 2 * number3, y: 432 }
+          source: { x: 360-per*(this.nodeNumber-1)/2+per*(2*number3-1), y: per*this.nodeNumber },
+          target: { x: 360-per*(this.nodeNumber-1)/2+per*2*number3, y: per*this.nodeNumber }
         });
         Nlink6.attr('line/stroke', '#e66f2b');
         Nlink7.attr('line/stroke', '#e66f2b');
@@ -322,12 +356,12 @@ export default {
       }
 
       // Add choosing points
-      for (var i1 = 1; i1 <= 6; i1++) {
-        for (var i2 = 1; i2 <= 6; i2++) {
+      for (var i1 = 1; i1 <= half; i1++) {
+        for (var i2 = 1; i2 <= half; i2++) {
           var NButton = new joint.shapes.standard.Circle({
             position: { 
-                x: 180 + 72*(i1-1),
-                y: 54 + 72*(i2-1) 
+                x: 360-per*(this.nodeNumber-1)/2+per/2+2*per*(i1-1),
+                y: per*3/2+2*per*(i2-1) 
                 },
             size: { width: 10, height: 10 },
             attrs: {
@@ -338,12 +372,12 @@ export default {
           constGraph.addCells([NButton]);
         }
       }
-      for (var i3 = 1; i3 <= 5; i3++) {
-        for (var i4 = 1; i4 <= 5; i4++) {
+      for (var i3 = 1; i3 <= half; i3++) {
+        for (var i4 = 1; i4 <= half-1; i4++) {
           var NButton2 = new joint.shapes.standard.Circle({
             position: { 
-                x: 216 + 72*(i3-1),
-                y: 90 + 72*(i4-1) 
+                x: 360-per*(this.nodeNumber-1)/2+per*3/2+2*per*(i3-1),
+                y: per*5/2+2*per*(i4-1) 
                 },
             size: { width: 10, height: 10 },
             attrs: {
