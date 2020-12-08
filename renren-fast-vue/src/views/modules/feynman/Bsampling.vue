@@ -20,7 +20,7 @@
     </el-container>
     </el-main>
     <el-aside width="400px" style="background-color:rgb(238, 241, 246)">
-      <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()">
+      <el-form :model="dataForm" :ref="dataForm" @keyup.enter.native="dataFormSubmit()">
         <el-row>
            <el-col :span="24">
            <div class="grid-content" style="font-size: 22px">
@@ -76,7 +76,7 @@
 
         <el-row>
           <el-col :span="10"><div class="grid-content">
-          <el-button type="success">Manually Set</el-button>
+          <el-button type="success" @click="drawTablePoint()">Manually Set</el-button>
           </div></el-col>
           <el-col :span="10"><div class="grid-content">
           <el-button type="success">Num On/Off</el-button>
@@ -147,6 +147,8 @@
              </div>
              </el-col>
              </div>
+             <DrawTablePoint1 v-if="drawTablePoint1Visible" ref="drawTablePoint1" @refreshDrawData1="getDrawData1"></DrawTablePoint1>
+             <DrawTablePoint2 v-if="drawTablePoint2Visible" ref="drawTablePoint2" @refreshDrawData2="getDrawData2"></DrawTablePoint2>
            </div>
         </el-row>
 
@@ -213,10 +215,14 @@
 
 <script>
   import { getUUID } from '@/utils'
+  import DrawTablePoint1 from './draw1'
+  import DrawTablePoint2 from './draw2'
   export default {
     data() {
       return {
         show: false,
+        drawTablePoint1Visible: false,
+        drawTablePoint2Visible: false,
         bosonData: [],
         index: 0,
          selfStyle: {
@@ -253,7 +259,34 @@
         value: 'Reck'
       }
     },
+    components: {
+      DrawTablePoint1,
+      DrawTablePoint2
+    },
     methods: {
+    // manually set
+    drawTablePoint() {
+      if (this.dataForm.feature == 'Reck') {
+        this.drawTablePoint1Visible = true;
+        this.$nextTick(() => {
+          this.$refs.drawTablePoint1.inti();
+        })
+      } else {
+        this.drawTablePoint2Visible = true;
+        this.$nextTick(() => {
+          this.$refs.drawTablePoint2.inti();
+        })
+      }      
+    },
+    // get draw data1
+    getDrawData1() {
+      console.log("Finished");
+    },
+    // get draw data2
+    getDrawData2() {
+      console.log("Finished");
+    },
+    created() {},
     // get drawing
     getDraw(row) {
       console.log(row.uuid);
@@ -282,10 +315,9 @@
     // Show Style
     showMessage(e) {
         console.log(e);
-        console.log(e.feature);
         this.$message('Choose Style "'+e+'"');
         this.dataForm.feature = e;
-        this.bsPath4 = window.SITE_CONFIG.cdnUrl + '/static/img/'+e+'_example_2.png'
+        this.bsPath4 = window.SITE_CONFIG.cdnUrl + '/static/img/'+e+'_example_2.png';
     },
     // get the picture1
           plot1() {
