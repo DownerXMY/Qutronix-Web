@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <el-dialog :close-on-click-modal="false" :visible.sync="visible" width="50%">
+  <el-dialog :close-on-click-modal="false" :visible.sync="visible" width="900px">
     <div id="app" class="joint-app joint-theme-modern">
       <div class="app-header">
         <div class="app-title">
