@@ -1,10 +1,10 @@
 <template>
-  <div class="div_imgmain" style="width:1300px;height:400px;padding-top:20px">
+  <div class="div_imgmain" style="width:100%;height:380px;padding-top:20px">
     <el-card shadow="never" class="card" >
 
-      <div align="center" style="width:1300px;height:350px">
+      <div align="center" style="width:380px%;height:380px">
         <img :src="bosonImg" style="width:100%;height:100%;" class="qwsimgcontainer" ref="qwsimgcontainer">
-        <img :src="bsPath" style="width:300px;height:300px" ref="imgloading">
+        <img :src="bsPath" style="width:380px;height:380px" ref="imgloading">
       </div>
     </el-card>
   </div>

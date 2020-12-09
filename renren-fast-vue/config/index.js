@@ -68,7 +68,7 @@ module.exports = {
     assetsPublicPath: '/',
 
     /**
-     * Source Maps
+     * Source Mapsf
      */
 
     productionSourceMap: false,
