@@ -8,11 +8,14 @@ import com.qutronix.cloud.feynmanserver.dto.TwoD_Qws;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService2;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("feynmanService2")
 @Slf4j
 public class FeynmanServiceImpl2 implements FeynmanService2 {
+    @Autowired
+    private FeynmanConfig feynmanConfig;
 
     @Override
     public void feynmanTest() throws MWException {
@@ -36,9 +39,9 @@ public class FeynmanServiceImpl2 implements FeynmanService2 {
         if (StringUtils.isNotEmpty(twoD_qws.getColorbar())) {
             colorbar = twoD_qws.getColorbar();
         }
-        String filePath = FeynmanConfig.filePath+ twoD_qws.getUuid() + FeynmanConfig.fileSuffix;// "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
+        String filePath = feynmanConfig.filePath+ twoD_qws.getUuid() + feynmanConfig.fileSuffix;// "/Users/mingyuexu/Desktop/TestPics2"+twoD_qws.getUuid()+".jpg";
         String figureName= twoD_qws.getUuid() + "_f1";
-        String figurePath = FeynmanConfig.filePath + figureName +FeynmanConfig.fileSuffix;
+        String figurePath = feynmanConfig.filePath + figureName +feynmanConfig.fileSuffix;
         JQws jQws = new JQws();
         jQws.j_qsws(twoD_qws.getFData(), twoD_qws.getTData(),
                 twoD_qws.getGap(), twoD_qws.getAmplitude(),

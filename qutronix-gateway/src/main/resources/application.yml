@@ -1,6 +1,9 @@
 spring:
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
         #用于测试网关是否正常路由，测试url http://localhost:88/?url=baidu
         - id: test_route
@@ -13,16 +16,23 @@ spring:
             - Path=/api/console/**
         - id: feynman_route
           uri: lb://qutronix-feynman
+          #uri: http://139.196.25.126:11001
           predicates:
             - Path=/api/feynman/**
           filters:
             - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: admin_route
           uri: lb://renren-fast
+          #uri: http://139.196.25.126:8080
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+    nacos:
+      discovery:
+        server-addr: localhost:8848,172.19.216.104:8848
+      config:
+        server-addr: localhost:8848,172.19.216.104:8848
 
   #- Path=/api/** 前端项目带api =>http://renren-fast:8080/api/captcha.jpg.
   #实际为http://localhost:8080/renren-fast/captcha.jpg

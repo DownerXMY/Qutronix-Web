@@ -33,6 +33,7 @@
             <version>2.1.0.RELEASE</version>
         </dependency>-->
         <!--actuatorJ检测springboot运行统计信息-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>

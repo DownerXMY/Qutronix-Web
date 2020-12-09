@@ -56,6 +56,9 @@ public class FeynmanController {
 
 
     @Autowired
+    private FeynmanConfig feynmanConfig;
+
+    @Autowired
     FeynmanBusiness feynmanBusiness;
 
     private static final String FEYNMAN_TYPE = "qws";
@@ -74,7 +77,7 @@ public class FeynmanController {
     @GetMapping(value = "/result", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
-        return ImageIO.read(new FileInputStream(new File( FeynmanConfig.filePath + fileName + FeynmanConfig.fileSuffix)));
+        return ImageIO.read(new FileInputStream(new File(feynmanConfig.filePath + fileName + feynmanConfig.fileSuffix)));
     }
 
 

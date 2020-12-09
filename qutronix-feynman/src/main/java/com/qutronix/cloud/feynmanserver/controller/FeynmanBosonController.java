@@ -46,6 +46,9 @@ public class FeynmanBosonController {
     @Autowired
     FeynmanBusiness feynmanBusiness;
 
+    @Autowired
+    private FeynmanConfig feynmanConfig;
+
     private static final String FEYNMAN_TYPE = "boson";
 
     /**
@@ -66,7 +69,7 @@ public class FeynmanBosonController {
     public BufferedImage getImage(@RequestParam String fileName) throws IOException {
         return ImageIO.read(
                 new FileInputStream(
-                        new File(FeynmanConfig.filePath + fileName + ".jpg")
+                        new File(feynmanConfig.filePath + fileName + ".jpg")
                 ));
     }
 

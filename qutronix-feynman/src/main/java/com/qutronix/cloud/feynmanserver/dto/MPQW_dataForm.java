@@ -16,5 +16,6 @@ public class MPQW_dataForm {
     private String colorbar;
     private String photonNumber;
     private String mode;
+    private String executor;
 
 }

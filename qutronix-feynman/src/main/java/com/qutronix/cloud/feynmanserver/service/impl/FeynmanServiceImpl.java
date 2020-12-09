@@ -14,6 +14,7 @@ import com.qutronix.cloud.feynmanserver.dto.TableDataDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -22,9 +23,12 @@ import org.springframework.stereotype.Service;
 public class FeynmanServiceImpl implements FeynmanService {
 
 
+    @Autowired
+    private FeynmanConfig feynmanConfig;
     @Override
     public String plot(QwsDTO qwsDTO) throws MWException {
-        String file = FeynmanConfig.filePath + qwsDTO.getUuid() +FeynmanConfig.fileSuffix;
+        String file = feynmanConfig.filePath + qwsDTO.getUuid() +feynmanConfig.fileSuffix;
+        log.info("FeynmanServiceImpl plot filename={}",file);
         JQws jQws = new JQws();
         jQws.j_qws(qwsDTO.getZ().toString(), qwsDTO.getX().toString(), qwsDTO.getY().toString(),
                 qwsDTO.getPx().toString(), qwsDTO.getPy().toString(), qwsDTO.getDx().toString(), qwsDTO.getDy().toString(), "colorbar_"+qwsDTO.getColorbar(), file, "30", "10");
@@ -33,7 +37,7 @@ public class FeynmanServiceImpl implements FeynmanService {
 
     @Override
     public String plotFile(QwsFileDTO qwsFileDTO) throws MWException {
-        String file = "F:\\qutronix\\images\\" + qwsFileDTO.getUuid() + ".png";
+        String file = feynmanConfig.filePath + qwsFileDTO.getUuid() + feynmanConfig.fileSuffix;
         int n = qwsFileDTO.getTabledata().length;
         int[] dims = {1, n};
         MWNumericArray x = null; // 存放x值的数组

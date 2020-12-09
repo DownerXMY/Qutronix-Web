@@ -1,10 +1,13 @@
 package com.qutronix.cloud.feynmanserver.controller;
 
 import com.mathworks.toolbox.javabuilder.MWException;
+import com.qutronix.cloud.feynmanserver.business.FeynmanBusiness;
+import com.qutronix.cloud.feynmanserver.config.FeynmanConfig;
 import com.qutronix.cloud.feynmanserver.dto.BS_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.MPQW_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.MPResultDTO;
 import com.qutronix.cloud.feynmanserver.dto.QwsResultDTO;
+import com.qutronix.cloud.feynmanserver.entity.FeynmanTaskEntity;
 import com.qutronix.cloud.feynmanserver.entity.MPQwsEntity;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService4;
 import com.qutronix.cloud.feynmanserver.service.MPQwsService;
@@ -40,6 +43,15 @@ public class FeynmanMPQWController {
     @Autowired
     MPQwsService mpQwsService;
 
+    @Autowired
+    FeynmanBusiness feynmanBusiness;
+
+    @Autowired
+    private FeynmanConfig feynmanConfig;
+
+
+    private static final String FEYNMAN_TYPE = "multi";
+
     /**
      * Demo Code For Multi-Particle Quantum Walks...
      */
@@ -59,7 +71,7 @@ public class FeynmanMPQWController {
         log.info("result fileName={}", fileName);
         return ImageIO.read(
                 new FileInputStream(
-                        new File("F:\\qutronix\\images\\" + fileName + ".jpg")
+                        new File(feynmanConfig.filePath + fileName + feynmanConfig.fileSuffix)
                 ));
     }
 
@@ -67,19 +79,26 @@ public class FeynmanMPQWController {
     public Result<MPResultDTO> plot1(@RequestBody MPQW_dataForm mpqw_dataForm)
             throws IOException, MWException {
         log.info("mpqw_dataForm={}", mpqw_dataForm);
+        FeynmanTaskEntity feynmanTaskEntity = feynmanBusiness.builderFeynmanTask(mpqw_dataForm.getUuid(), FEYNMAN_TYPE, mpqw_dataForm.getExecutor());
 
-        MPResultDTO mpResultDTO = feynmanService4.plot1(mpqw_dataForm);
-        MPQwsEntity mpQwsEntity = new MPQwsEntity();
-        BeanUtils.copyProperties(mpqw_dataForm,mpQwsEntity);
-        String refinedIniState = mpqw_dataForm.getIniState();
-        refinedIniState = refinedIniState.substring(1,refinedIniState.length()-1);
-        mpQwsEntity.setIniRawState(refinedIniState);
-        String refinedProbState = mpqw_dataForm.getProbStates();
-        refinedProbState = refinedProbState.replace(">","]");
-        mpQwsEntity.setProbRawStates(refinedProbState);
-        mpQwsService.save(mpQwsEntity);
-
-        return Result.success(mpResultDTO);
+        try {
+            feynmanBusiness.saveFeynmanTask(feynmanTaskEntity);
+            MPResultDTO mpResultDTO = feynmanService4.plot1(mpqw_dataForm);
+            MPQwsEntity mpQwsEntity = new MPQwsEntity();
+            BeanUtils.copyProperties(mpqw_dataForm, mpQwsEntity);
+            String refinedIniState = mpqw_dataForm.getIniState();
+            refinedIniState = refinedIniState.substring(1, refinedIniState.length() - 1);
+            mpQwsEntity.setIniRawState(refinedIniState);
+            String refinedProbState = mpqw_dataForm.getProbStates();
+            refinedProbState = refinedProbState.replace(">", "]");
+            mpQwsEntity.setProbRawStates(refinedProbState);
+            mpQwsService.save(mpQwsEntity);
+            feynmanBusiness.updateFeynmanTaskSuccess(feynmanTaskEntity);
+            return Result.success(mpResultDTO);
+        } catch (Exception ex) {
+            feynmanBusiness.updateFeynmanTaskFailed(feynmanTaskEntity);
+            throw ex;
+        }
     }
 
     @PostMapping(value = "MPQws/result")

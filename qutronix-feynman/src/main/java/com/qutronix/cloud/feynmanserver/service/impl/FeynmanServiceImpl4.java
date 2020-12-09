@@ -7,11 +7,16 @@ import com.qutronix.cloud.feynmanserver.dto.MPQW_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.MPResultDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService4;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("feynmanService4")
 @Slf4j
 public class FeynmanServiceImpl4 implements FeynmanService4 {
+
+    @Autowired
+    private FeynmanConfig feynmanConfig;
+
     @Override
     public void feynmanTest() throws MWException {
     }
@@ -23,15 +28,15 @@ public class FeynmanServiceImpl4 implements FeynmanService4 {
         String fOneOptic = mpdataForm.getUuid() + "_fOneOptic";
         String fRhoZ = mpdataForm.getUuid() + "_fRhoZ";
 
-        String fEnumerateFile = FeynmanConfig.filePath + fEnumerate + FeynmanConfig.fileSuffix;
-        String fTwoDFile = FeynmanConfig.filePath + fTwoD + FeynmanConfig.fileSuffix;
-        String fOneOpticFile = FeynmanConfig.filePath + fOneOptic + FeynmanConfig.fileSuffix;
-        String fRhoZFile = FeynmanConfig.filePath + fRhoZ + FeynmanConfig.fileSuffix;
+        String fEnumerateFile = feynmanConfig.filePath + fEnumerate + feynmanConfig.fileSuffix;
+        String fTwoDFile = feynmanConfig.filePath + fTwoD + feynmanConfig.fileSuffix;
+        String fOneOpticFile = feynmanConfig.filePath + fOneOptic + feynmanConfig.fileSuffix;
+        String fRhoZFile = feynmanConfig.filePath + fRhoZ + feynmanConfig.fileSuffix;
 
         JQws jQws = new JQws();
         jQws.j_mp(mpdataForm.getDistance(), mpdataForm.getIniState(), mpdataForm.getProbStates()
                 , mpdataForm.getStatMethod(), mpdataForm.getPerspectives(), mpdataForm.getPhotonNumber(),
-                "colorbar_"+mpdataForm.getColorbar(), fEnumerateFile, fTwoDFile, fOneOpticFile, fRhoZFile);
+                "colorbar_" + mpdataForm.getColorbar(), fEnumerateFile, fTwoDFile, fOneOpticFile, fRhoZFile);
 
         MPResultDTO build = MPResultDTO.builder().fEnumerate(fEnumerate)
                 .fOneOptic(fOneOptic)

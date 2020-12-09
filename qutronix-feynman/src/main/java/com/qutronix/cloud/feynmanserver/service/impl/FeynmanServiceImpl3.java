@@ -7,12 +7,14 @@ import com.qutronix.cloud.feynmanserver.dto.BS_dataForm;
 import com.qutronix.cloud.feynmanserver.dto.BosonResultDTO;
 import com.qutronix.cloud.feynmanserver.service.FeynmanService3;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("feynmanService3")
 @Slf4j
 public class FeynmanServiceImpl3 implements FeynmanService3 {
-
+    @Autowired
+    private FeynmanConfig feynmanConfig;
     @Override
     public void feynmanTest() throws MWException {
 
@@ -20,7 +22,7 @@ public class FeynmanServiceImpl3 implements FeynmanService3 {
 
     @Override
     public String plot1(BS_dataForm bs_dataForm) throws MWException {
-        String file =FeynmanConfig.filePath+bs_dataForm.getUuid()+".jpg";
+        String file =feynmanConfig.filePath+bs_dataForm.getUuid()+".jpg";
         JQws jQws = new JQws();
 
         return bs_dataForm.getUuid();
@@ -30,8 +32,8 @@ public class FeynmanServiceImpl3 implements FeynmanService3 {
     public BosonResultDTO plot2(BS_dataForm bs_dataForm) throws MWException {
         String waveguides=bs_dataForm.getUuid()+"_waveguides";
         String distribution=bs_dataForm.getUuid()+"_distribution";
-        String waveguidesFile = FeynmanConfig.filePath+waveguides+FeynmanConfig.fileSuffix;
-        String distributionFile = FeynmanConfig.filePath+distribution+FeynmanConfig.fileSuffix;
+        String waveguidesFile = feynmanConfig.filePath+waveguides+feynmanConfig.fileSuffix;
+        String distributionFile = feynmanConfig.filePath+distribution+feynmanConfig.fileSuffix;
         JQws jQws = new JQws();
         jQws.j_boson(bs_dataForm.getInputNum(),bs_dataForm.getFeature(),
                 bs_dataForm.getIniState(),waveguidesFile,distributionFile);
