@@ -19,7 +19,7 @@
         <div class="stencil-container" id="stencil"></div>
         <div class="paper-container" id="paper" @mousemove="updateXY"></div>
         <div class="inspector-container">
-          <el-table :data="tData" border empty-text="No point yet" style="width: 100%" height="600px">
+          <el-table :data="tDataNormal" border empty-text="No point yet" style="width: 100%" height="600px">
             <el-table-column prop="id" label="id" width="40">
             </el-table-column>
             <el-table-column prop="x_coordinate" label="x_coor" width="100">
@@ -40,6 +40,7 @@ export default {
     return {
       num: 0,
       tData: [],
+      tDataNormal: [],
       tabledata: "",
       coordinates: [],
       visible: false,
@@ -111,10 +112,10 @@ export default {
       this.visible = false;
       this.qwsTabledata = this.coordinates
       this.qwsTabledata = this.qwsTabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
-      this.coordinates = []
-      this.tData = []
+      // this.coordinates = []
+      // this.tData = []
 
-      //this.$emit("refreshDrawData", this.coordinates);
+      this.$emit("refreshDrawData", this.coordinates);
     },
 
     inti() {
@@ -145,6 +146,18 @@ export default {
         // ------------------------
         // ------------------------
       });
+
+      for (var index1=1;index1<=this.tData.length;index1++) {
+          var lastingPoint = new joint.shapes.standard.Circle({
+            position: { x: this.tData[index1-1].x_coordinate, y: this.tData[index1-1].y_coordinate },
+            size: { width: 10, height: 10 },
+            attrs: {
+              body: { stroke: "black", fill: "#f1f0f1" },
+              label: { text: "      " + index1, fontSize: 16 },
+            },
+          });
+          this.graph.addCell(lastingPoint);   
+      }
 
       // Canvas from which you take shapes
       var stencilGraph = new joint.dia.Graph();
@@ -228,6 +241,7 @@ export default {
         for (var i = 0; i < this.tData.length; i++) {
           if (this.tData[i].id == cellView.model.attributes.attrs.label.text) {
             this.tData.splice(i, 1);
+            this.tDataNormal.splice(i, 1);
             this.coordinates.splice(i, 1);
           }
         }
@@ -242,6 +256,11 @@ export default {
         this.num = this.num + 1;
         this.coordinates = this.coordinates.concat([[_x, _y]]);
         this.tData.push({ id: this.num, x_coordinate: _x, y_coordinate: _y });
+        this.tDataNormal.push({
+          id: this.num, 
+          x_coordinate: (_x-300)*0.5,
+          y_coordinate: (_y-300)*0.5
+        })
         console.log(this.coordinates);
         console.log("getCloneOnPaper");
         $("body").append(
@@ -300,7 +319,7 @@ export default {
           }
           $("body").off("mousemove.fly").off("mouseup.fly");
           flyShape.remove();
-          $("#flyPaper").remove();
+          // $("#flyPaper").remove();
         });
       });
 
@@ -404,6 +423,8 @@ export default {
           if (this.tData[num].id == cellView.model.attributes.attrs.label.text) {
             this.tData[num].x_coordinate = new_x;
             this.tData[num].y_coordinate = new_y;
+            this.tDataNormal[num].x_coordinate = (new_x-300)*0.5;
+            this.tDataNormal[num].y_coordinate = (new_y-300)*0.5;
             this.coordinates[num] = [new_x, new_y];
           }
         }
@@ -440,7 +461,11 @@ export default {
       });
       // 清空确认
       $("#clearGraph").on("click", () => {
-        this.graph.clear(), (this.coordinates = []), (this.tData = []), (this.num = 0);
+        this.graph.clear(), 
+        (this.coordinates = []), 
+        (this.tData = []), 
+        (this.tDataNormal = []),
+        (this.num = 0);
       });
       $("#makeSure").on("click", () => {
         (this.coordinates = this.coordinates.map((item) => ({
