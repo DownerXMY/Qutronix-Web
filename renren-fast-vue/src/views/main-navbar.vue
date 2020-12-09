@@ -2,8 +2,8 @@
   <nav class="site-navbar" :class="'site-navbar--' + navbarLayoutType">
     <div class="site-navbar__header">
       <h1 class="site-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="site-navbar__brand-lg" href="javascript:;">思量量子云平台</a>
-        <a class="site-navbar__brand-mini" href="javascript:;">思量</a>
+        <a class="site-navbar__brand-lg" href="javascript:;">QUTORONIX</a>
+        <a class="site-navbar__brand-mini" href="javascript:;">QUTORONIX</a>
       </h1>
     </div>
     <div class="site-navbar__body clearfix">
@@ -17,18 +17,18 @@
       <el-menu
         class="site-navbar__menu site-navbar__menu--right"
         mode="horizontal">
-        <el-menu-item index="1" @click="$router.push({ name: 'theme' })">
+        <!--el-menu-item index="1" @click="$router.push({ name: 'theme' })">
           <template slot="title">
             <el-badge value="new">
               <icon-svg name="shezhi" class="el-icon-setting"></icon-svg>
             </el-badge>
           </template>
-        </el-menu-item>
-        <el-menu-item index="2">
+        </!--el-menu-item>
+        <el-menu-item-- index="2">
           <el-badge value="hot">
             <a href="http://future.inwoo.design/" target="_blank">Future远见</a>
           </el-badge>
-        </el-menu-item>
+        </el-menu-item-->
         <el-menu-item class="site-navbar__avatar" index="3">
           <el-dropdown :show-timeout="0" placement="bottom">
             <span class="el-dropdown-link">

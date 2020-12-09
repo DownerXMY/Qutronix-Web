@@ -73,29 +73,31 @@ export default {
         this.$store.state.feynmandata.imgloading.style.display = "none";
       } else if (this.taskType == 'qsws') {
 
-         this.$store.state.feynmandata.qswsImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId);
+        this.$store.state.feynmandata.qswsImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId);
         this.$store.state.feynmandata.qwsimgcontainerQsws.style.display = "block";
         this.$store.state.feynmandata.imgloadingQsws.style.display = "none";
 
 
 
-         this.$store.state.feynmandata.qswsView = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId+"_f1");
+        this.$store.state.feynmandata.qswsView = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId + "_f1");
         this.$store.state.feynmandata.qwsimgcontainerQswsView.style.display = "block";
         this.$store.state.feynmandata.imgloadingQswsView.style.display = "none";
       }
       else if (this.taskType == 'boson') {
 
-         this.$store.state.feynmandata.bosonImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId+ "_distribution");
+        this.$store.state.feynmandata.bosonImg = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId + "_distribution");
         this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "block";
         this.$store.state.feynmandata.imgloadingBoson.style.display = "none";
 
 
 
-         this.$store.state.feynmandata.bosonView = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId+"_waveguides");
+        this.$store.state.feynmandata.bosonView = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId + "_waveguides");
         this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "block";
         this.$store.state.feynmandata.imgloadingBosonView.style.display = "none";
       }
-
+      else if (this.taskType == 'multi') {
+        this.$emit("loadData", row.taskId)
+      }
     },
   },
   computed: {
