@@ -22,9 +22,9 @@
           <el-table :data="tDataNormal" border empty-text="No point yet" style="width: 100%" height="600px">
             <el-table-column prop="id" label="id" width="40">
             </el-table-column>
-            <el-table-column prop="x_coordinate" label="x_coor" width="100">
+            <el-table-column prop="x_coordinate" label="x" width="100">
             </el-table-column>
-            <el-table-column prop="y_coordinate" label="y_coor" width="100">
+            <el-table-column prop="y_coordinate" label="y" width="100">
             </el-table-column>
           </el-table>
         </div>
@@ -109,6 +109,7 @@ export default {
     },
     backToQws() {
       console.log("draw backto qws")
+      console.log(this.coordinates);
       this.visible = false;
       this.qwsTabledata = this.coordinates
       this.qwsTabledata = this.qwsTabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
@@ -147,6 +148,9 @@ export default {
         // ------------------------
       });
 
+      // console.log("demo");
+      // console.log(this.tData);
+      this.coordinates = [];
       for (var index1=1;index1<=this.tData.length;index1++) {
           var lastingPoint = new joint.shapes.standard.Circle({
             position: { x: this.tData[index1-1].x_coordinate, y: this.tData[index1-1].y_coordinate },
@@ -156,7 +160,10 @@ export default {
               label: { text: "      " + index1, fontSize: 16 },
             },
           });
-          this.graph.addCell(lastingPoint);   
+          this.graph.addCell(lastingPoint);  
+          this.coordinates.push([this.tData[index1-1].x_coordinate,this.tData[index1-1].y_coordinate]);
+          // console.log("test");
+          // console.log(this.coordinates);
       }
 
       // Canvas from which you take shapes
@@ -254,15 +261,15 @@ export default {
         [_x, _y] = [e.offsetX, e.offsetY];
         // console.log(this);
         this.num = this.num + 1;
-        this.coordinates = this.coordinates.concat([[_x, _y]]);
+        this.coordinates.push([_x, _y]);
         this.tData.push({ id: this.num, x_coordinate: _x, y_coordinate: _y });
         this.tDataNormal.push({
           id: this.num, 
           x_coordinate: (_x-300)*0.5,
           y_coordinate: (_y-300)*0.5
         })
-        console.log(this.coordinates);
-        console.log("getCloneOnPaper");
+        // console.log(this.coordinates);
+        // console.log("getCloneOnPaper");
         $("body").append(
           '<div id="flyPaper" style="position:fixed;z-index:100;opacity:.7;pointer-event:none;"></div>'
         );
@@ -468,10 +475,10 @@ export default {
         (this.num = 0);
       });
       $("#makeSure").on("click", () => {
-        (this.coordinates = this.coordinates.map((item) => ({
-          x: item[0],
-          y: item[1],
-        }))),
+        // (this.coordinates = this.tData.map((item) => ({
+        //   x: item.x_coordinate,
+        //   y: item.y_coordinate
+        // }))),
           console.log(this.coordinates);
       });
 
