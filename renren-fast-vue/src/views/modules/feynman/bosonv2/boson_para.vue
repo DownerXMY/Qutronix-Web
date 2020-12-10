@@ -66,8 +66,9 @@ export default {
     // 表单提交
     plot() {
       this.$refs['dataForm'].validate((valid) => {
-
+      
         if (valid) {
+            this.$emit("closeDrawer")
 
           this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "none";
           this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "none";

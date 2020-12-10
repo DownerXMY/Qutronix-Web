@@ -63,6 +63,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
 
         if (valid) {
+              this.$emit("closeDrawer")
           this.$store.state.feynmandata.qwsimgcontainerQsws.style.display = "none";
           this.$store.state.feynmandata.qwsimgcontainerQswsView.style.display = "none";
           this.$store.state.feynmandata.imgloadingQsws.style.display = "block";

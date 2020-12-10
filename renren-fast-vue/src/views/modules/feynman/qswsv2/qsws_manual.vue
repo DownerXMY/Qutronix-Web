@@ -86,6 +86,7 @@ export default {
 
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+                this.$emit("closeDrawer")
             this.qwsimgcontainer.style.display = "none";
           this.imgloading.style.display = "block";
           this.qwsPath = this.$http({

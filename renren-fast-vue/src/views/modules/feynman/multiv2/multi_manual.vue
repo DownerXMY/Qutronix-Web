@@ -85,6 +85,7 @@ export default {
       console.log(this.qwsTabledata)
 
       this.$refs['dataForm'].validate((valid) => {
+        this.$emit("closeDrawer")
         if (valid) {
           this.$store.state.feynmandata.qwsimgcontainerBoson.style.display = "none";
           this.$store.state.feynmandata.qwsimgcontainerBosonView.style.display = "none";

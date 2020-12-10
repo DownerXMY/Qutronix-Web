@@ -120,6 +120,7 @@ export default {
     plot() {
       this.$refs['dataForm'].validate((valid) => {
 
+this.$emit("closeDrawer")
         if (valid) {
 
           this.$emit("loading");
