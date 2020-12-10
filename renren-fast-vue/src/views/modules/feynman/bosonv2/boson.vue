@@ -7,29 +7,15 @@
     </div>
 
     <el-row :gutter="20">
-      <el-col :span="24">
-        <div align="left" style="width:1300px;height:400px">
-         
+      <el-col :span="22">   
               <QImage></QImage>
-          
-        </div>
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="24">
-        <div align="left" style="width:1300px;height:400px">
-       
-              <QswsView></QswsView>
-        
-        </div>
-
+      <el-col :span="22"> 
+              <QswsView></QswsView>   
       </el-col>
     </el-row>
-
-    <div>
-
-    </div>
-
     <drawer title="Parameter Set" :display.sync="parameterSet.display" :inner="true" :width="parameterSet.drawerWidth"
       :mask="false">
       <qws-para-set></qws-para-set>

@@ -1,11 +1,11 @@
 <template>
-  <div class="div_imgmain" style="width:650px;height:800px">
+  <div class="div_imgmain" style="width:100%;height:650px;padding-top:20px">
     <el-card shadow="never" class="card" >
       <div slot="header" class="clearfiximg" align="center">
         <span id="text3d">2D Quantum Stochastic Walks</span>
       </div>
 
-      <div align="center" style="width:650px;height:650px">
+      <div align="center" style="width:100%;height:600px">
         <img :src="qswsImg" style="width:auto;height:auto;" class="qwsimgcontainer" ref="qwsimgcontainer">
         <img :src="bsPath" style="width:600px;height:600px" ref="imgloading">
       </div>

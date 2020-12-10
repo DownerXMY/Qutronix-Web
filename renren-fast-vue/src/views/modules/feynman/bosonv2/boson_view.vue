@@ -1,11 +1,11 @@
 <template>
-<div class="div_imgmain" style="width:1300px;height:400px;padding-top:0px">
+<div class="div_imgmain" style="width:100%;height:380px;padding-top:40px">
     <el-card shadow="never" class="card" >
 
 
-      <div align="center" style="width:1300px;height:350px">
-        <img :src="bosonView"   style="width:1300px;height:350px" class="qwsimgcontainer" ref="qwsimgcontainer">
-        <img :src="bsPath" style="width:300px;height:300px" ref="imgloading">
+      <div align="center" style="width:1300px;height:380px">
+        <img :src="bosonView"   style="width:100%;height:380px" class="qwsimgcontainer" ref="qwsimgcontainer">
+        <img :src="bsPath" style="width:380px;height:380px" ref="imgloading">
       </div>
     </el-card>
   </div>

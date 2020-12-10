@@ -5,36 +5,20 @@
       <el-button type="primary" @click="showParameterset()">Parameter Set</el-button>
       <el-button type="primary" @click="showFeynmanTask()">Task</el-button>
     </div>
-
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <div align="left" style="width:800px;height:800px">
-          <el-container>
-            <el-main>
-              <QImage></QImage>
-            </el-main>
-
-            <el-aside width="120px">
-              <Colorbar></Colorbar>
-            </el-aside>
-          </el-container>
-        </div>
+     <el-row :gutter="20">
+      <el-col :span="11">   
+             <QImage></QImage>
       </el-col>
-      <el-col :span="12">
-        <div align="left" style="width:800px;height:800px">
-          <el-container>
-            <el-main>
-              <QswsView></QswsView>
-            </el-main>
-          </el-container>
-        </div>
-
+    <el-col :span="2"> 
+      <div style="padding-top:20px">
+           <Colorbar></Colorbar>
+           </div>
+     </el-col>
+      <el-col :span="11"> 
+         <QswsView></QswsView>
       </el-col>
     </el-row>
-
-    <div>
-
-    </div>
+ 
 
     <drawer title="Parameter Set" :display.sync="parameterSet.display" :inner="true" :width="parameterSet.drawerWidth"
       :mask="false">
