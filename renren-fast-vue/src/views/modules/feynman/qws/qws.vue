@@ -23,16 +23,16 @@
     </div>
 
     <drawer title="Parameter Set" :display.sync="parameterSet.display" :inner="true" :width="parameterSet.drawerWidth"
-      :mask="false">
-      <qws-para-set></qws-para-set>
+      :mask="false" >
+      <qws-para-set  @closeDrawer="closeDrawer"></qws-para-set>
     </drawer>
     <drawer ref="manualSetDrawer" title="Manually Set" :display.sync="manualSet.display" :inner="true"
       :width="manualSet.drawerWidth" :mask="false">
-      <qws-manual-set @showDrawTablePoint="showDrawTablePoint"></qws-manual-set>
+      <qws-manual-set @showDrawTablePoint="showDrawTablePoint"  @closeDrawer="closeDrawer"></qws-manual-set>
     </drawer>
     <drawer ref="feynmanTaskSetDrawer" title="Task" :display.sync="feynmanTask.display" :inner="true"
       :width="feynmanTask.drawerWidth" :mask="false">
-      <feynman-task ref="feynmanTask" :taskType='taskType'></feynman-task>
+      <feynman-task ref="feynmanTask" :taskType='taskType' @closeDrawer="closeDrawer"></feynman-task>
     </drawer>
     <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></drawTablePoint>
   </div>
@@ -85,6 +85,11 @@ export default {
       this.tabledata = coordinates
       this.tabledata = this.tabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
       console.log(this.tabledata);
+    },
+    closeDrawer(){
+      this.parameterSet.display=false;
+      this.manualSet.display=false;
+      this.feynmanTask.display=false;
     },
     showParameterset() {
       this.manualSet.display = false

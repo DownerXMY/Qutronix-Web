@@ -67,6 +67,7 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
 
         if (valid) {
+          this.$emit("closeDrawer")
           this.qwsimgcontainer.style.display = "none";
           this.imgloading.style.display = "block";
           this.qwsPath = this.$http({
@@ -102,7 +103,7 @@ export default {
                 duration: 1500,
                 onClose: () => {
                   this.visible = false
-                  this.$emit('refreshDataList')
+                  
 
                 }
               })
@@ -114,6 +115,7 @@ export default {
           })
         }
       })
+      
     },
     loadtasks() {
       console.log("loading data from qws...");

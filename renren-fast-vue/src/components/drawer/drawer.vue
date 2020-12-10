@@ -4,7 +4,7 @@
     <div :class="mainClass" :style="mainStyle" class="main">
       <div class="drawer-head">
         <span>{{ title }}</span>
-        <span class="close-btn" v-show="closable" @click="closeByButton">X</span>
+           <el-button type="warning" plain class="close-btn" v-show="closable" @click="closeByButton">Close</el-button>
       </div>
       <div class="drawer-body">
         <slot/>

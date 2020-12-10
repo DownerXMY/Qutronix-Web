@@ -10,7 +10,7 @@
     </el-table-column>
     <el-table-column prop="" label="Result">
       <template slot-scope="scope">
-        <el-button type="text" @click="takeDraw(scope.row)" v-if="scope.row.status==1">See</el-button>
+        <el-button type="text" @click="takeDraw(scope.row)" v-if="scope.row.status==1">View</el-button>
       </template>
     </el-table-column>
     <el-table-column prop="taskId" label="" width="60" v-if="false">
@@ -67,6 +67,7 @@ export default {
     },
     takeDraw(row) {
       console.log(this.taskType + ":" + row.taskId);
+        this.$emit("closeDrawer")
       if (this.taskType == 'qws') {
         this.$store.state.feynmandata.qws_img = this.$http.adornUrl(`/feynman/server/result?fileName=` + row.taskId);
         this.$store.state.feynmandata.qwsimgcontainer.style.display = "block";
@@ -98,6 +99,7 @@ export default {
       else if (this.taskType == 'multi') {
         this.$emit("loadData", row.taskId)
       }
+    
     },
   },
   computed: {
