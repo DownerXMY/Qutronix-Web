@@ -28,6 +28,9 @@ spring:
         # 最大阻塞等待时间（负数表示没有限制）
         max-wait: 0
     timeout: 3000
+  mvc:
+    async:
+      request-timeout: 200000
 
 mybatis-plus:
   #扫描mapper xml 文件

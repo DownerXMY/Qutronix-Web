@@ -92,7 +92,7 @@ public class FeynmanController {
                     .build();
             QwsEntity qwsEntity = new QwsEntity();
             BeanUtils.copyProperties(qwsDTO, qwsEntity);
-            //qwsService.save(qwsEntity);
+            qwsService.save(qwsEntity);
             feynmanBusiness.updateFeynmanTaskSuccess(feynmanTaskEntity);
             return Result.success(build);
         } catch (Exception ex) {

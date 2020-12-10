@@ -36,3 +36,6 @@ spring:
 
   #- Path=/api/** 前端项目带api =>http://renren-fast:8080/api/captcha.jpg.
   #实际为http://localhost:8080/renren-fast/captcha.jpg
+  mvc:
+    async:
+      request-timeout: 200000
