@@ -25,6 +25,16 @@ public class QwsDTO {
     private String dx;
     private String dy;
 
+    /**
+     * 30
+     */
+    private String accx;
+
+    /**
+     * accy
+     */
+    private String accy;
+
     private String colorbar;
 
     private String executor;

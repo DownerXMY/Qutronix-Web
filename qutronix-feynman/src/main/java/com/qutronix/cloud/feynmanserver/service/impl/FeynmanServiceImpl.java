@@ -31,7 +31,8 @@ public class FeynmanServiceImpl implements FeynmanService {
         log.info("FeynmanServiceImpl plot filename={}",file);
         JQws jQws = new JQws();
         jQws.j_qws(qwsDTO.getZ().toString(), qwsDTO.getX().toString(), qwsDTO.getY().toString(),
-                qwsDTO.getPx().toString(), qwsDTO.getPy().toString(), qwsDTO.getDx().toString(), qwsDTO.getDy().toString(), "colorbar_"+qwsDTO.getColorbar(), file, "30", "10");
+                qwsDTO.getPx().toString(), qwsDTO.getPy().toString(), qwsDTO.getDx().toString(), qwsDTO.getDy().toString(),
+                "colorbar_"+qwsDTO.getColorbar(), file, qwsDTO.getAccx(), qwsDTO.getAccy());
         return qwsDTO.getUuid();
     }
 
