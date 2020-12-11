@@ -149,6 +149,7 @@
              </div>
              <DrawTablePoint1 v-if="drawTablePoint1Visible" ref="drawTablePoint1" @refreshDrawData1="getDrawData1"></DrawTablePoint1>
              <DrawTablePoint2 v-if="drawTablePoint2Visible" ref="drawTablePoint2" @refreshDrawData2="getDrawData2"></DrawTablePoint2>
+             <DrawTablePoint3 v-if="drawTablePoint3Visible" ref="drawTablePoint3" @refreshDrawData3="getDrawData3"></DrawTablePoint3>
            </div>
         </el-row>
 
@@ -217,12 +218,14 @@
   import { getUUID } from '@/utils'
   import DrawTablePoint1 from './draw1'
   import DrawTablePoint2 from './draw2'
+  import DrawTablePoint3 from './draw3'
   export default {
     data() {
       return {
         show: false,
         drawTablePoint1Visible: false,
         drawTablePoint2Visible: false,
+        drawTablePoint3Visible: false,
         bosonData: [],
         index: 0,
          selfStyle: {
@@ -237,7 +240,7 @@
         },
         visible: false,
          dataForm: {
-           'inputNum': 12,
+           'inputNum': "",
            'iniState': '|000000000111>',
            'alpha': '',
            'varphi': '',
@@ -261,7 +264,8 @@
     },
     components: {
       DrawTablePoint1,
-      DrawTablePoint2
+      DrawTablePoint2,
+      DrawTablePoint3
     },
     methods: {
     // manually set
@@ -269,14 +273,21 @@
       if (this.dataForm.feature == 'Reck') {
         this.drawTablePoint1Visible = true;
         this.$nextTick(() => {
-          this.$refs.drawTablePoint1.inti();
+          this.$refs.drawTablePoint1.inti(this.dataForm.inputNum);
         })
       } else {
-        this.drawTablePoint2Visible = true;
-        this.$nextTick(() => {
-          this.$refs.drawTablePoint2.inti();
-        })
-      }      
+        if (this.dataForm.inputNum % 2 == 0) {
+          this.drawTablePoint2Visible = true;
+          this.$nextTick(() => {
+            this.$refs.drawTablePoint2.inti(this.dataForm.inputNum);
+          })
+        } else {
+          this.drawTablePoint3Visible = true;
+          this.$nextTick(() => {
+            this.$refs.drawTablePoint3.inti(this.dataForm.inputNum);
+          })
+        }
+      }
     },
     // get draw data1
     getDrawData1() {
@@ -284,6 +295,10 @@
     },
     // get draw data2
     getDrawData2() {
+      console.log("Finished");
+    },
+    // get draw data3
+    getDrawData3() {
       console.log("Finished");
     },
     created() {},
