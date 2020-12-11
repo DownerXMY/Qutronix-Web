@@ -20,15 +20,16 @@
 
     <el-form-item label="">
       <el-row type="flex" class="row-bg" style="margin-bottom: 10px;margin-top:10px;" justify="center">
-        <el-col :span="10" justify="center">
+        <el-col :span="8" justify="center">
           <el-button type="success" @click="plot()">Plot</el-button>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="8">
           <el-button type="success" @click="plot()">Plot Quickly</el-button>
         </el-col>
-        <el-col :span="4" justify="center">
-
+          <el-col :span="8">
+          <el-button type="success" @click="manuaSet()">Manually Set</el-button>
         </el-col>
+  
       </el-row>
     </el-form-item>
   </el-form>
@@ -64,6 +65,10 @@ export default {
   },
   methods: {
     // 表单提交
+    manuaSet(){
+      console.log("boson manual set")
+      this.$emit("showDrawPoint",this.dataForm.feature,this.dataForm.inputNum)
+    },
     plot() {
       this.$refs['dataForm'].validate((valid) => {
       
