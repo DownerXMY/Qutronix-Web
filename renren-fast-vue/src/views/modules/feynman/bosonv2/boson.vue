@@ -25,9 +25,9 @@
       :width="feynmanTask.drawerWidth" :mask="false">
       <feynman-task ref="feynmanTask" :taskType='taskType' @closeDrawer="closeDrawer"></feynman-task>
     </drawer>
-     <DrawTablePoint1 v-if="drawTablePoint1Visible" ref="drawTablePoint1" @refreshDrawData1="getDrawData1"></DrawTablePoint1>
-             <DrawTablePoint2 v-if="drawTablePoint2Visible" ref="drawTablePoint2" @refreshDrawData2="getDrawData2"></DrawTablePoint2>
-             <DrawTablePoint3 v-if="drawTablePoint3Visible" ref="drawTablePoint3" @refreshDrawData3="getDrawData3"></DrawTablePoint3>
+      <DrawTablePoint1 v-if="drawTablePoint1Visible" ref="drawTablePoint1" @refreshDrawData1="getDrawData1"></DrawTablePoint1>
+      <DrawTablePoint2 v-if="drawTablePoint2Visible" ref="drawTablePoint2" @refreshDrawData2="getDrawData2"></DrawTablePoint2>
+      <DrawTablePoint3 v-if="drawTablePoint3Visible" ref="drawTablePoint3" @refreshDrawData3="getDrawData3"></DrawTablePoint3>
   </div>
 
 </template>
@@ -110,9 +110,9 @@ export default {
       this.$nextTick(() => {
         this.$refs.feynmanTask.getDataList();
       })
-},
-     showDrawTablePoint(feature,inputNum) {
-       console.log(feature+":"+inputNum)
+    },
+    showDrawTablePoint(feature,inputNum) {
+      // console.log(feature+":"+inputNum)
       if (feature == 'Reck') {
         this.drawTablePoint1Visible = true;
         this.$nextTick(() => {
@@ -131,6 +131,19 @@ export default {
           })
         }
       }
+    },
+    // get draw data1
+    getDrawData1(info) {
+      console.log("draw1 Finished");
+      
+    },
+    // get draw data2
+    getDrawData2() {
+      console.log("Finished");
+    },
+    // get draw data3
+    getDrawData3() {
+      console.log("Finished");
     },
     handleClose(done) {
       this.$confirm('确认关闭？')

@@ -164,12 +164,12 @@ export default {
   mounted: function () {
     this.$nextTick(() => {
       // 在此处执行你要执行的函数
-      this.inti();
+      // this.inti();
     });
   },
   computed: {},
   created() {
-    this.inti()
+    this.inti(13)
   },
   methods: {
     changeMode() {
@@ -254,8 +254,6 @@ export default {
           label: { text: "圆点", fontSize: 10 },
         },
       });
-
-      stencilGraph.addCells([r1]);
 
       // ----------------------------------------
       // Building construction on thios canvas...

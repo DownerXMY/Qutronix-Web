@@ -1,53 +1,11 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <el-dialog
-    :close-on-click-modal="false"
-    :visible.sync="visible"
-    width="80%"
-  >
-    <div
-      id="app"
-      class="joint-app joint-theme-modern"
-    >
+  <el-dialog :close-on-click-modal="false" :visible.sync="visible" width="80%">
+    <div id="app" class="joint-app joint-theme-modern">
       <div class="app-header">
         <div class="app-title">
           <h1 align="center"></h1>
         </div>
         <div class="toolbar-container ">
-          <button
-            id="zoom-in"
-            style="font-size: 15px;margin-left: 10px"
-          >放大</button>
-          <button
-            id="zoom-out"
-            style="font-size: 15px;margin-left: 10px"
-          >缩小</button>
-          <label
-            for="ox"
-            title="Position of zero x-coordinate of the paper in pixels"
-            style="font-size: 15px;margin-left: 10px"
-          >整体左右移动</label>
-          <input
-            id="ox"
-            name="ox"
-            type="range"
-            value="0"
-            min="-200"
-            max="200"
-            autocomplete="off"
-          />
-          <label
-            for="oy"
-            title="Position of zero y-coordinate of the paper in pixels"
-            style="font-size: 15px;margin-left: 10px"
-          >整体上下移动</label>
-          <input
-            id="oy"
-            type="range"
-            value="0"
-            min="-200"
-            max="200"
-            autocomplete="off"
-          />
           <button
             id="clearGraph"
             @click="changeMode()"
@@ -56,23 +14,13 @@
         </div>
       </div>
       <div class="app-body">
-        <div
-          class="stencil-container"
-          id="stencil"
-        ></div>
-        <div
-          class="paper-container"
-          id="paper"
-          @mousemove='updateXY'
-        ></div>
+        <div class="stencil-container" id="stencil"></div>
+        <div class="paper-container" id="paper" @mousemove='updateXY'></div>
         <div class="inspector-container">
           <div
             class="form-horizontal"
             style="padding: 10px"
           >
-            <h1>编辑图形</h1>
-            <h2>Text</h2>
-
             <div class="input-group mb-3 input-group-lg ">
               <div style="font-size: 15px;margin-top: 10px;margin-right: 10px">Alpha</div>
               <input
@@ -119,10 +67,11 @@ export default {
   data() {
     return {
       num: 0,
-      nodeNumber: 12,
+      nodeNumber: "",
       tData: [],
       tabledata: "",
       coordinates: [],
+      info: [],
       alpha1: "",
       varphi1: "",
       alphaUpdate1: "",
@@ -155,12 +104,12 @@ export default {
   mounted: function () {
     this.$nextTick(() => {
       // 在此处执行你要执行的函数
-      this.inti();
+      // this.inti(12);
     });
   },
   computed: {},
   created() {
-    this.inti()
+    this.inti(12);
   },
   methods: {
     changeMode() {
@@ -180,7 +129,7 @@ export default {
     },
     backToBS() {
         this.visible = false;
-        this.$emit("refreshDrawData1");
+        this.$emit("refreshDrawData1", this.info);
     },
     updateXY: function (event) {
       this.x = event.offsetX;
@@ -189,22 +138,18 @@ export default {
     inti(nodes) {
       this.visible = true;
       this.nodeNumber = parseInt(nodes);
-      this.graph = new joint.dia.Graph
+      // console.log("phase1...");
+      this.graph = new joint.dia.Graph;
       var paper = new joint.dia.Paper({
         el: $('#paper'),
         width: 790,
         height: 590,
         gridSize: 10,
         drawGrid: true,
-        /*background: {
-            color: 'rgba(0, 255, 0, 0.3)'
-        },*/
         model: this.graph,
         defaultLink: new joint.dia.Link({
           attrs: {
-            '.connection': { stroke: 'blue' },
-            '.marker-source': { fill: 'red', d: 'M 10 0 L 0 5 L 10 10 z' },
-            '.marker-target': { fill: 'yellow', d: 'M 10 0 L 0 5 L 10 10 z' }
+            '.connection': { stroke: 'blue' }
           }
         }),
 
@@ -225,9 +170,10 @@ export default {
           }
         })
       });
+      // console.log("phase2...");
 
       // Canvas from which you take shapes
-      var stencilGraph = new joint.dia.Graph
+      var stencilGraph = new joint.dia.Graph();
       var stencilPaper = new joint.dia.Paper({
         el: $('#stencil'),
         width: 790,
@@ -244,8 +190,7 @@ export default {
           label: { text: "圆点", fontSize: 10 },
         },
       });
-
-      stencilGraph.addCells([r1]);
+      // console.log("phase3...");
 
       // ----------------------------------------
       // Building construction on thios canvas...
@@ -257,6 +202,8 @@ export default {
         model: constGraph,
         interactive: false
       });
+      // console.log("phase4...");
+      console.log(this.nodeNumber);
 
       const per = 2 * (350- 350 % (2*this.nodeNumber-1)) / (2*this.nodeNumber-1);
       for (var number = 1; number < this.nodeNumber; number++) {
@@ -329,22 +276,26 @@ export default {
       for (var i1 = 1; i1 < this.nodeNumber; i1++) {
         for (var i2 = 1; i2 <= i1; i2++) {
           var NButton = new joint.shapes.standard.Circle({
+            name: "",
             position: { x: 360 - (i1 - 1) * per + 2 * per * (i2 - 1), y: per + per * (2 * i1 - 1) / 2 },
             size: { width: 10, height: 10 },
             attrs: {
               body: { stroke: "black", fill: "#af9bff" },
-              label: { text: "", fontSize: 16 },
+              label: { text: "         "+(((2*this.nodeNumber-1-i2)*i2/2)*1+i2-i1), fontSize: 10 },
             },
           });
           constGraph.addCells([NButton]);
         }
       }
+      // console.log("phase5...");
       // -----------------------------------------
       // -----------------------------------------
 
       var chosenPoint1 = Object();
       constPaper.on('cell:pointerdown', (cellView, e, x, y) => {
         this.chosenPoint1 = cellView.model;
+        this.alphaUpdate1 = (cellView.model.attributes.name).split(",")[0];
+        this.varphiUpdate1 = (cellView.model.attributes.name).split(",")[1];
         this.chosenList1 = this.chosenList1.concat([this.chosenPoint1]);
         console.log(this.chosenPoint1);
         // console.log(this.chosenList1);
@@ -507,13 +458,22 @@ export default {
         paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
       });
       $('#clearGraph').on('click', () => {
-        this.graph.clear()
+        this.graph.clear(),
+        this.info = []
       });
       $("#makeSure").on("click", () => {
         (this.alpha1 = this.alphaUpdate1),
         (this.varphi1 = this.varphiUpdate1),
-        (this.chosenPoint1.attributes.attrs.label.text = "        "+this.alpha1+","+this.varphi1),
-        (this.chosenPoint1.attr('body/fill','#df4617'))
+        (this.info.push({
+          index: parseInt(this.chosenPoint1.attributes.attrs.label.text),
+          x: this.alpha1,
+          y: this.varphi1
+        })),
+        (this.chosenPoint1.attributes.name = this.alpha1+","+this.varphi1),
+        (this.chosenPoint1.attributes.attrs.label.text = "            "+this.chosenPoint1.attributes.attrs.label.text+","+this.alpha1+","+this.varphi1),
+        (this.chosenPoint1.attributes.attrs.label.fontSize = 10),
+        (this.chosenPoint1.attr('body/fill','#df4617')),
+        console.log(this.info);
       });
 
       var $ox = $('#ox');
@@ -534,7 +494,7 @@ export default {
   width: 100%;
 }
 #paper {
-  background: #30d0c6;
+  background: #f1f0f1;
 }
 
 /*#stencil {
@@ -552,8 +512,8 @@ body,
 }
 .app-title {
   display: inline-block;
-  width: 240px;
-  height: 100%;
+  width: 0px;
+  height: 30px;
   padding: 0;
   background: #64e4e4;
 }
@@ -561,7 +521,7 @@ body,
   display: inline-block;
   position: absolute;
   height: 100%;
-  left: 240px;
+  left: 0px;
   right: 0;
   box-sizing: border-box;
   /*background: red;*/
@@ -578,10 +538,10 @@ body,
   top: 0;
   /*border-right-color:red;*/
   border-style: solid;
-  border-width: 1px;
-  width: 50px;
+  border-width: 0px;
+  width: 0px;
   height: 100%;
-  background-color: #9093b1;
+  background-color: #4ff890;
 }
 .paper-container {
   position: absolute;
@@ -589,8 +549,8 @@ body,
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  left: 240px;
-  right: 240px;
+  left: 0px;
+  right: 0px;
 }
 .inspector-container {
   position: absolute;
@@ -600,7 +560,6 @@ body,
   width: 240px;
   box-sizing: border-box;
   height: 590px;
-  background-color: #9093b1;
 }
 
 .joint-inspector {
