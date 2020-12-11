@@ -3,30 +3,31 @@
   <div class="mod-config">
     <div class="btnDiv">
       <el-button type="primary" @click="showParameterset()">Parameter Set</el-button>
+      <el-button type="primary" @click="showManualSet()">Manually Set</el-button>
       <el-button type="primary" @click="showFeynmanTask()">Task</el-button>
     </div>
 
     <el-row :gutter="20">
-      <el-col :span="22">   
-              <QImage></QImage>
+      <el-col :span="22">
+        <QImage></QImage>
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="22"> 
-              <QswsView></QswsView>   
+      <el-col :span="22">
+        <QswsView></QswsView>
       </el-col>
     </el-row>
     <drawer title="Parameter Set" :display.sync="parameterSet.display" :inner="true" :width="parameterSet.drawerWidth"
       :mask="false">
-      <qws-para-set  @closeDrawer="closeDrawer"></qws-para-set>
+      <qws-para-set @closeDrawer="closeDrawer"></qws-para-set>
     </drawer>
     <drawer ref="manualSetDrawer" title="Manually Set" :display.sync="manualSet.display" :inner="true"
       :width="manualSet.drawerWidth" :mask="false">
-      <qws-manual-set @showDrawTablePoint="showDrawTablePoint"  @closeDrawer="closeDrawer"></qws-manual-set>
+      <qws-manual-set @showDrawTablePoint="showDrawTablePoint" @closeDrawer="closeDrawer"></qws-manual-set>
     </drawer>
     <drawer ref="feynmanTaskSetDrawer" title="Task" :display.sync="feynmanTask.display" :inner="true"
       :width="feynmanTask.drawerWidth" :mask="false">
-      <feynman-task ref="feynmanTask" :taskType='taskType'  @closeDrawer="closeDrawer"></feynman-task>
+      <feynman-task ref="feynmanTask" :taskType='taskType' @closeDrawer="closeDrawer"></feynman-task>
     </drawer>
     <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></drawTablePoint>
   </div>
@@ -80,10 +81,10 @@ export default {
       this.tabledata = this.tabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
       console.log(this.tabledata);
     },
-      closeDrawer(){
-      this.parameterSet.display=false;
-      this.manualSet.display=false;
-      this.feynmanTask.display=false;
+    closeDrawer() {
+      this.parameterSet.display = false;
+      this.manualSet.display = false;
+      this.feynmanTask.display = false;
     },
     showParameterset() {
       this.manualSet.display = false

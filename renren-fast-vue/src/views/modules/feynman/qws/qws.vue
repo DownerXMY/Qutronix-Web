@@ -40,7 +40,6 @@
 </template>
 <script>
 import QImage from './qws_img'
-import QTab from './qws_tab'
 import Colorbar from '../colorbar'
 import FeynmanTask from '../feynmanTask'
 import drawer from '@/components/drawer/drawer'
@@ -70,7 +69,6 @@ export default {
   },
   components: {
     QImage,
-    QTab,
     Colorbar,
     FeynmanTask,
     drawer,
