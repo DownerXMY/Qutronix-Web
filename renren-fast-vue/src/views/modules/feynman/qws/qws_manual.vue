@@ -31,7 +31,7 @@
             <el-button type="success" size="large" @click="plotFile()">Plot file</el-button>
           </el-col>
           <el-col :span="10">
-            <el-button type="success" size="large" @click="plotFile()">Plot file Quickly</el-button>
+            <el-button type="success" size="large" @click="plotFile()">Plot Manual</el-button>
           </el-col>
           <el-col :span="4" justify="center">
 

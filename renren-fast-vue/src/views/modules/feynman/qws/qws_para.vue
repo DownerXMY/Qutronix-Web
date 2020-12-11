@@ -27,10 +27,10 @@
     <el-form-item label="">
       <el-row type="flex" class="row-bg" style="margin-bottom: 10px;margin-top:10px;" justify="center">
         <el-col :span="10" justify="center">
-          <el-button type="success" @click="plot()">Plot</el-button>
+          <el-button type="success" @click="plotNormal()">Plot</el-button>
         </el-col>
         <el-col :span="10">
-          <el-button type="success" @click="plot()">Plot Quickly</el-button>
+          <el-button type="success" @click="plotQuick()">Plot Quickly</el-button>
         </el-col>
         <el-col :span="4" justify="center">
 
@@ -56,13 +56,26 @@ export default {
         'dy': 15,
         'fz': '3',
         'inn': '2',
+        'accx':"30",
+        'accy':"10",
         uuid: '',
         tabledata: ''
       }
     }
   },
   methods: {
+    plotNormal(){
+      this.accx="30"
+      this.accy="50"
+      this.plot()
+    },
+    plotQuick(){
+       this.accx="30"
+      this.accy="10"
+      this.plot()
+    },
     // 表单提交
+
     plot() {
       this.$refs['dataForm'].validate((valid) => {
 
@@ -83,7 +96,9 @@ export default {
               'dx': this.dataForm.dx,
               'dy': this.dataForm.dy,
               'colorbar': this.colorbar,
-              'executor': this.$store.state.user.name
+              'executor': this.$store.state.user.name,
+              'accx': this.dataForm.accx,
+              'accy': this.dataForm.accy
 
             })
           }).then(({ data }) => {

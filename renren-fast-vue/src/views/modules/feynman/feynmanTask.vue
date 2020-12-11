@@ -7,7 +7,7 @@
     <el-table-column prop="beginTime" label="Begin Time">
     </el-table-column>
     <el-table-column prop="endTime" label="End Time">
-    </el-table-column>
+    </el-table-column>no
     <el-table-column prop="" label="Result">
       <template slot-scope="scope">
         <el-button type="text" @click="takeDraw(scope.row)" v-if="scope.row.status==1">View</el-button>
