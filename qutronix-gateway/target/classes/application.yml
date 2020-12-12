@@ -1,0 +1,28 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        #用于测试网关是否正常路由，测试url http://localhost:88/?url=baidu
+        - id: test_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url,baidu
+        - id: console_route
+          uri: lb://qutronix-console
+          predicates:
+            - Path=/api/console/**
+        - id: feynman_route
+          uri: lb://qutronix-feynman
+          predicates:
+            - Path=/api/feynman/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+  #- Path=/api/** 前端项目带api =>http://renren-fast:8080/api/captcha.jpg.
+  #实际为http://localhost:8080/renren-fast/captcha.jpg
