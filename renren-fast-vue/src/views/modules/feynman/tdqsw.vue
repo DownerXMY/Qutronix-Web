@@ -85,8 +85,8 @@
               width="80">
             </el-table-column>
             <el-table-column
-              prop="noteId"
-              label="noteId"
+              prop="nodeId"
+              label="nodeId"
               width="100">
             </el-table-column>
             <el-table-column
@@ -380,15 +380,15 @@ export default {
                 inputNum:data.data[amount].inputNum,
                 amplitude:data.data[amount].amplitude,
                 gap:data.data[amount].gap,
-                fData:data.data[amount].fData,
-                tData:data.data[amount].tData,
+                fData:data.data[amount].fdata,
+                tData:data.data[amount].tdata,
                 nodeId:data.data[amount].nodeId,
                 times:data.data[amount].times,
                 colorbar:data.data[amount].colorbar,
                 uuid:data.data[amount].uuid
               });
             }
-        }); 
+        });
     },
     // Colorbar Mode
     handleCommand(command) {

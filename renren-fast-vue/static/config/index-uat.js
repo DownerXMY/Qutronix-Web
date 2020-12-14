@@ -6,7 +6,7 @@
 
   // api接口请求地址
   //window.SITE_CONFIG['baseUrl'] = 'http://localhost:8080/renren-fast';
-  window.SITE_CONFIG['baseUrl'] = 'http://localhost:8868/api';
+  window.SITE_CONFIG['baseUrl'] = 'http://192.168.1.92:8868/api';
   // cdn地址 = 域名 + 版本号
   window.SITE_CONFIG['domain']  = './'; // 域名
   window.SITE_CONFIG['version'] = '';   // 版本号(年月日时分)

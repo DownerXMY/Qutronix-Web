@@ -19,6 +19,9 @@
           </el-col>
         </el-row>
       </el-form-item>
+      <el-form-item label="Num of nodes" class="title">
+        <el-input v-model="dataForm.inputNum"></el-input>
+      </el-form-item>
       <el-form-item label="Prpagation Distance z(mm)" class="title">
         <el-input v-model="dataForm.fz"></el-input>
       </el-form-item>
@@ -39,30 +42,56 @@
         </el-row>
       </el-form-item>
     </el-form>
-    <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></drawTablePoint>
+    <DrawTablePoint1 v-if="drawTablePoint1Visible" ref="drawTablePoint1" @refreshDrawData1="getDrawData1"></DrawTablePoint1>
+    <DrawTablePoint2 v-if="drawTablePoint2Visible" ref="drawTablePoint2" @refreshDrawData2="getDrawData2"></DrawTablePoint2>
+    <DrawTablePoint3 v-if="drawTablePoint3Visible" ref="drawTablePoint3" @refreshDrawData3="getDrawData3"></DrawTablePoint3>
   </div>
 </template>
 
 <script>
 import XLSX from 'xlsx'
-import DrawTablePoint from '../draw'
+import DrawTablePoint1 from '../draw1'
+import DrawTablePoint2 from '../draw2'
+import DrawTablePoint3 from '../draw3'
 import { getUUID } from '@/utils'
+import draw1Vue from '../draw1.vue'
 
 export default {
   data() {
     return {
       dataForm: {
+        'inputNum': "",
         'fz': '3',
         'inn': '2',
         uuid: '',
         tabledata: ''
       },
-      drawTablePointVisible: false,
+      drawTablePoint1Visible: false,
+      drawTablePoint2Visible: false,
+      drawTablePoint3Visible: false,
     }
   },
   methods: {
     showDrawTablePoint() {
       console.log("qws manual showDrawTablePoint")
+      if (this.dataForm.feature == 'Reck') {
+        this.drawTablePoint1Visible = true;
+        this.$nextTick(() => {
+          this.$refs.drawTablePoint1.inti(this.dataForm.inputNum);
+        })
+      } else {
+        if (this.dataForm.inputNum % 2 == 0) {
+          this.drawTablePoint2Visible = true;
+          this.$nextTick(() => {
+            this.$refs.drawTablePoint2.inti(this.dataForm.inputNum);
+          })
+        } else {
+          this.drawTablePoint3Visible = true;
+          this.$nextTick(() => {
+            this.$refs.drawTablePoint3.inti(this.dataForm.inputNum);
+          })
+        }
+      };
       this.$emit("showDrawTablePoint");
     },
     drawTablePoint() {
@@ -71,12 +100,17 @@ export default {
         this.$refs.drawTablePoint.inti();
       })
     },
-    // 获取数据列表
-    getDrawData(coordinates) {
-      console.log("qws manual getDrawData ");
-      //this.$store.state.feynmandata.qwsTabledata = coordinates
-      //this.$store.state.feynmandata.qwsTabledata = this.$store.state.feynmandata.qwsTabledata.map(item => ({ x: (item[0] - 300) * 0.5, y: (item[1] - 300) * 0.5 }))
-      //console.log(this.$store.state.feynmandata.qwsTabledata);
+    // get draw data1
+    getDrawData1() {
+      console.log("Finished");
+    },
+    // get draw data2
+    getDrawData2() {
+      console.log("Finished");
+    },
+    // get draw data3
+    getDrawData3() {
+      console.log("Finished");
     },
     // 表单提交
     plotFile() {
@@ -180,7 +214,9 @@ export default {
     }
   },
   components: {
-    DrawTablePoint
+    DrawTablePoint1,
+    DrawTablePoint2,
+    DrawTablePoint3
   },
   mounted() {
 

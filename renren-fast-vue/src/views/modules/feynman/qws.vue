@@ -301,7 +301,7 @@
       </el-aside>
 
     </el-container>
-    <drawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></drawTablePoint>
+    <DrawTablePoint v-if="drawTablePointVisible" ref="drawTablePoint" @refreshDrawData="getDrawData"></DrawTablePoint>
   </div>
 </template>
 
@@ -395,7 +395,7 @@ export default {
             this.num2 = this.num2 + 1;
               this.tData2.push({Id:this.num2,fz:data.data[amount].fz,inn:data.data[amount].inn,uuid:data.data[amount].uuid,points:data.data[amount].points});
             }
-        });  
+        });
     },
     // Clear Tasks
     cleartasks() {

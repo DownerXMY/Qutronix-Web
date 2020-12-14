@@ -562,8 +562,8 @@ body,
 .inspector-container {
   position: absolute;
   top: 0;
-  left: 610px;
-  bottom: 520px;
+  left: 0px;
+  bottom: 120px;
   width: 240px;
   box-sizing: border-box;
   height: 600px;
